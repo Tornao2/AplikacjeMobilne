@@ -10,32 +10,48 @@ export default function MainScreen() {
   const [period, setPeriod] = useState("miesiąc");
 
   // Dane do wykresu
-  const dataSets = {
+ const dataSets = {
+
     dzień: [
-      { name: "Jedzenie", amount: 80, color: "#FF6384" },
-      { name: "Transport", amount: 20, color: "#36A2EB" },
+      { name: "Artykuły spożywcze", amount: 500, color: "red" },
+      { name: "Transport", amount: 20, color: "green" },
     ],
+
     miesiąc: [
-      { name: "Artykuły spożywcze", amount: 4000, color: "#FF6384" },
-      { name: "Kredyty", amount: 1200, color: "#36A2EB" },
-      { name: "Leasingi", amount: 800, color: "#9966FF" },
-      { name: "Czynsz", amount: 1000, color: "#FFCE56" },
-      { name: "Media", amount: 500, color: "#4BC0C0" },
-      { name: "Rozrywka", amount: 300, color: "#FF9F40" },
+      { name: "Artykuły spożywcze", amount: 500, color: "red" },
+      { name: "Kredyty", amount: 1200, color: "orange" },
+      { name: "Leasingi", amount: 800, color: "purple" },
+      { name: "Transport", amount: 300, color: "blue" },
+      { name: "Czynsz", amount: 1000, color: "pink" },
+      { name: "Media", amount: 500, color: "yellow" },
+      { name: "Rozrywka", amount: 300, color: "black" },
+      { name: "Oszczędności", amount: 500, color: "green" },
+      { name: "Wynajem", amount: 1000, color: "gray" },
     ],
+
     rok: [
-      { name: "Podróże", amount: 8000, color: "#4BC0C0" },
-      { name: "Oszczędności", amount: 10000, color: "#36A2EB" },
-      { name: "Wynajem", amount: 5000, color: "#FF6384" },
+      { name: "Artykuły spożywcze", amount: 500, color: "red" },
+      { name: "Kredyty", amount: 1200, color: "orange" },
+      { name: "Leasingi", amount: 10000, color: "purple" },
+      { name: "Transport", amount: 3600, color: "blue" },
+      { name: "Czynsz", amount: 12000, color: "pink" },
+      { name: "Media", amount: 3000, color: "yellow" },
+      { name: "Rozrywka", amount: 1800, color: "black" },
+      { name: "Podróże", amount: 8000, color: "cyan" },
+      { name: "Oszczędności", amount: 6000, color: "green" },
+      { name: "Wynajem", amount: 12000, color: "gray" },
     ],
   };
+
 
   const currentData = dataSets[period];
   const total = currentData.reduce((sum, item) => sum + item.amount, 0);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+
       {/* Przyciski okresu */}
+
       <View style={styles.periodButtons}>
         {["dzień", "miesiąc", "rok"].map((p) => (
           <TouchableOpacity
@@ -56,7 +72,7 @@ export default function MainScreen() {
           name: item.name,
           population: item.amount,
           color: item.color,
-          legendFontColor: "#333",
+          legendFontColor: "dimgray",
           legendFontSize: 14,
         }))}
         width={screenWidth - 40}
@@ -65,7 +81,7 @@ export default function MainScreen() {
         backgroundColor="transparent"
         paddingLeft="90"
         chartConfig={{
-          color: () => `#333`,
+          color: () => `dimgray`,
         }}
         hasLegend={false}
         center={[0, 0]}
@@ -77,7 +93,7 @@ export default function MainScreen() {
         <Text style={styles.totalText}>Łączna suma dochodów: {total} zł</Text>
         <TouchableOpacity
           style={styles.editButton}
-          onPress={() => navigation.navigate("EditFinance")}
+          onPress={() => navigation.navigate("Edit")}
         >
           <Text style={styles.editButtonText}>Edytuj</Text>
         </TouchableOpacity>
@@ -101,19 +117,19 @@ export default function MainScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { alignItems: "center", backgroundColor: "#fff", paddingVertical: 40 },
+  container: { alignItems: "center", backgroundColor: "white", paddingVertical: 40 },
   periodButtons: { flexDirection: "row", justifyContent: "center", marginBottom: 15 },
   periodButton: {
     borderWidth: 1,
-    borderColor: "#007AFF",
-    borderRadius: 20,
+    borderColor: "black",
+    borderRadius: 8,
     paddingVertical: 6,
     paddingHorizontal: 14,
     marginHorizontal: 5,
   },
-  periodText: { color: "#007AFF", fontWeight: "600" },
-  activePeriod: { backgroundColor: "#007AFF" },
-  activePeriodText: { color: "#fff" },
+  periodText: { color: "black", fontWeight: "600" },
+  activePeriod: { backgroundColor: "black" },
+  activePeriodText: { color: "white" },
   totalRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -123,12 +139,12 @@ const styles = StyleSheet.create({
   },
   totalText: { fontSize: 18, fontWeight: "600" },
   editButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "black",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
   },
-  editButtonText: { color: "#fff", fontWeight: "600" },
+  editButtonText: { color: "white", fontWeight: "600" },
   listContainer: { width: "90%", marginTop: 20 },
   listItem: {
     flexDirection: "row",

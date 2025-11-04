@@ -8,7 +8,7 @@ export default function QuotesScreen() {
         "Nie oszczędzaj tego, co zostaje po wszystkich wydatkach, lecz wydawaj,
         co zostaje po odłożeniu oszczędności."
       </Text>
-      <Text style={styles.author}>– Warren E. Buffett</Text>
+      <Text style={styles.author}> Warren E. Buffett</Text>
     </View>
   );
 }
@@ -18,20 +18,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "white",
     padding: 20,
   },
   quote: {
     fontSize: 20,
     fontStyle: "italic",
     textAlign: "center",
-    color: "#333",
+    color: "black",
     marginBottom: 20,
     lineHeight: 28,
   },
   author: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#555",
+    color: "black",
   },
 });

@@ -49,7 +49,7 @@ export default function GoalsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Twoje cele finansowe</Text>
+      <Text style={styles.title}>Twoje cele</Text>
 
       {/* Dodawanie nowego celu */}
       {showAddForm && (
@@ -72,10 +72,10 @@ export default function GoalsScreen() {
               <Text style={styles.saveButtonText}>Zapisz cel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.saveButton, { backgroundColor: "#FF3B30" }]}
+              style={[styles.saveButton, { backgroundColor: "red" }]}
               onPress={() => setShowAddForm(false)}
             >
-              <Text style={styles.saveButtonText}>✖ Anuluj</Text>
+              <Text style={styles.saveButtonText}>Anuluj</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -110,21 +110,21 @@ export default function GoalsScreen() {
 
               <View style={styles.actionsRow}>
                 <TouchableOpacity
-                  style={[styles.saveButton, { backgroundColor: "#34C759" }]}
+                  style={[styles.saveButton, { backgroundColor: "lime" }]}
                   onPress={() => updateProgress(index, 100)}
                 >
                   <Text style={styles.saveButtonText}>+100 zł</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.saveButton, { backgroundColor: "#FF9500" }]}
+                  style={[styles.saveButton, { backgroundColor: "orange" }]}
                   onPress={() => updateProgress(index, -100)}
                 >
                   <Text style={styles.saveButtonText}>-100 zł</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.saveButton, { backgroundColor: "#FF3B30" }]}
+                  style={[styles.saveButton, { backgroundColor: "red" }]}
                   onPress={() => deleteGoal(index)}
                 >
                   <Text style={styles.saveButtonText}>Usuń cel</Text>
@@ -139,61 +139,61 @@ export default function GoalsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 20, paddingTop: 50 },
+  container: { flex: 1, backgroundColor: "white", padding: 20, paddingTop: 50 },
   title: { fontSize: 22, fontWeight: "700", marginBottom: 15, textAlign: "center" },
 
   addGoalButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "black",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
     marginBottom: 20,
   },
-  addGoalButtonText: { color: "#fff", fontWeight: "700", fontSize: 16 },
+  addGoalButtonText: { color: "white", fontWeight: "700", fontSize: 16 },
 
   addContainer: {
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "white",
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "dimgray",
     borderRadius: 8,
     padding: 10,
     marginVertical: 5,
   },
   formButtons: { flexDirection: "row", justifyContent: "space-between" },
   saveButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "black",
     padding: 10,
     borderRadius: 8,
     flex: 1,
     alignItems: "center",
     marginHorizontal: 4,
   },
-  saveButtonText: { color: "#fff", fontWeight: "600" },
+  saveButtonText: { color: "white", fontWeight: "600" },
 
   scroll: { flex: 1 },
   goalCard: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#white",
     borderRadius: 10,
     padding: 15,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: "darkgray",
   },
   goalHeader: { marginBottom: 10 },
   goalName: { fontSize: 18, fontWeight: "600" },
-  goalAmount: { color: "#555" },
+  goalAmount: { color: "black" },
   progressBar: {
     height: 10,
-    backgroundColor: "#eee",
+    backgroundColor: "white",
     borderRadius: 5,
     overflow: "hidden",
   },
-  progressFill: { height: "100%", backgroundColor: "#007AFF" },
+  progressFill: { height: "100%", backgroundColor: "lime" },
   actionsRow: {
     flexDirection: "row",
     justifyContent: "space-between",

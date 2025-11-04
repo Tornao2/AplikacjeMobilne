@@ -4,11 +4,11 @@ import { useTheme } from "../context/ThemeContext";
 
 
 export default function SettingsScreen() {
-  // 🔹 Stan motywu (true = dark)
+  //  Stan motywu (true = dark)
   //const [darkMode, setDarkMode] = useState(false);
    const { theme, toggleTheme, setDarkMode } = useTheme();
    const darkMode = theme.darkMode;
-  // 🔹 Dane użytkownika (na sztywno)
+  // Dane użytkownika (na sztywno)
   const [user, setUser] = useState({
     name: "admin",
     email: "admin@gmail.com",
@@ -16,7 +16,7 @@ export default function SettingsScreen() {
     avatar: require("../assets/avatar.jpg"), // dodaj avatar.png do /assets/
   });
 
-  // 🔹 Edytowane wartości
+  // Edytowane wartości
   const [editName, setEditName] = useState(user.name);
   const [editEmail, setEditEmail] = useState(user.email);
   const [editPassword, setEditPassword] = useState(user.password);
@@ -28,23 +28,23 @@ export default function SettingsScreen() {
       email: editEmail,
       password: editPassword,
     });
-    alert("Zapisano zmiany profilu ✅");
+    alert("Zapisano zmiany");
   };
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: darkMode ? "#1c1c1c" : "#fff" },
+        { backgroundColor: darkMode ? "black" : "white" },
       ]}
     >
       <Text
         style={[
           styles.title,
-          { color: darkMode ? "#fff" : "#000" },
+          { color: darkMode ? "white" : "black" },
         ]}
       >
-        Ustawienia profilu
+        Ustawienia
       </Text>
 
       {/* Avatar */}
@@ -52,59 +52,59 @@ export default function SettingsScreen() {
 
       {/* Przełącznik motywu */}
       <View style={styles.themeRow}>
-        <Text style={[styles.label, { color: darkMode ? "#fff" : "#000" }]}>
-          Motyw ciemny
+        <Text style={[styles.label, { color: darkMode ? "white" : "black" }]}>
+          Motyw
         </Text>
         <Switch
           value={darkMode}
           onValueChange={setDarkMode}
           //onValueChange={toggleTheme}
 
-          thumbColor={darkMode ? "#fff" : "#007AFF"}
-          trackColor={{ false: "#ccc", true: "#007AFF" }}
+          thumbColor={darkMode ? "white" : "black"}
+          trackColor={{ false: "white", true: "black" }}
         />
       </View>
 
-      {/* Edycja profilu */}
+      {/* ustawienia */}
       <TextInput
         style={[
           styles.input,
-          { color: darkMode ? "#fff" : "#000", borderColor: darkMode ? "#555" : "#ccc" },
+          { color: darkMode ? "white" : "black", borderColor: darkMode ? "dimgray " : "darkgrey" },
         ]}
         value={editName}
         onChangeText={setEditName}
         placeholder="Nazwa użytkownika"
-        placeholderTextColor={darkMode ? "#888" : "#666"}
+        placeholderTextColor={darkMode ? "dimgray" : "darkgrey"}
       />
 
       <TextInput
         style={[
           styles.input,
-          { color: darkMode ? "#fff" : "#000", borderColor: darkMode ? "#555" : "#ccc" },
+          { color: darkMode ? "white" : "black", borderColor: darkMode ? "dimgray" : "darkgrey" },
         ]}
         value={editEmail}
         onChangeText={setEditEmail}
         placeholder="E-mail"
-        placeholderTextColor={darkMode ? "#888" : "#666"}
+        placeholderTextColor={darkMode ? "dimgray" : "darkgrey"}
       />
 
       <TextInput
         style={[
           styles.input,
-          { color: darkMode ? "#fff" : "#000", borderColor: darkMode ? "#555" : "#ccc" },
+          { color: darkMode ? "white" : "black", borderColor: darkMode ? "dimgray" : "darkgrey" },
         ]}
         value={editPassword}
         onChangeText={setEditPassword}
         placeholder="Hasło"
         secureTextEntry
-        placeholderTextColor={darkMode ? "#888" : "#666"}
+        placeholderTextColor={darkMode ? "dimgray" : "darkgrey"}
       />
 
       <TouchableOpacity
-        style={[styles.saveButton, { backgroundColor: darkMode ? "#555" : "#007AFF" }]}
+        style={[styles.saveButton, { backgroundColor: darkMode ? "grey" : "black" }]}
         onPress={saveChanges}
       >
-        <Text style={styles.saveButtonText}>💾 Zapisz zmiany</Text>
+        <Text style={styles.saveButtonText}>Zapisz zmiany</Text>
       </TouchableOpacity>
     </View>
   );
@@ -136,5 +136,5 @@ const styles = StyleSheet.create({
     width: "80%",
     marginTop: 10,
   },
-  saveButtonText: { color: "#fff", fontWeight: "600" },
+  saveButtonText: { color: "white", fontWeight: "600" },
 });

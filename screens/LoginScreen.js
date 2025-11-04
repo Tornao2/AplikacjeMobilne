@@ -11,10 +11,10 @@ export default function LoginScreen({ navigation }) {
 
 //  const handleSubmit = () => {
 //    if (!isRegister) {
-//      if (email === "admin" && password === "1234") {
+//      if (email === "admin@gmail.com" && password === "1234") {
 //        navigation.replace("MainTabs");
 //      } else {
-//        alert("Niepoprawny login lub hasło!");
+//        alert("Niepoprawny email lub hasło!");
 //      }
 //    } else {
 //      //API
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '800',
     marginBottom: 30,
-    color: '#007AFF',
+    color: 'gold',
     textAlign: 'center',
     width: '90%',
   },
@@ -78,26 +78,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
   },
 
   title: {
     fontSize: 26,
     fontWeight: '700',
     marginBottom: 30,
+    color: 'black',
   },
 
   input: {
     width: '90%',
     borderWidth: 1,
-    borderColor: '#aaa',
+    borderColor: 'black',
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
   },
 
   button: {
-    backgroundColor: '#4ade80',
+    backgroundColor: 'black',
     padding: 14,
     borderRadius: 8,
     width: '90%',
@@ -106,13 +107,13 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: '#fff',
+    color: 'white',
     fontWeight: '600',
   },
 
   link: {
     marginTop: 15,
-    color: '#007AFF',
+    color: 'black',
     fontSize: 14,
   },
 });

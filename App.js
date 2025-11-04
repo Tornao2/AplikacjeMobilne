@@ -29,7 +29,7 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="MainTabs" component={MainTabs} />
-          <Stack.Screen name="EditFinance" component={EditScreen} />
+          <Stack.Screen name="Edit" component={EditScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
@@ -40,13 +40,14 @@ export default function App() {
 
 function MainTabs() {
   return (
-  <Tab.Navigator>
-      <Tab.Screen name="Main" component={MainScreen} />
-      <Tab.Screen name="Quotes" component={QuotesScreen} />
-      <Tab.Screen name="Gallery" component={GalleryScreen} />
-      <Tab.Screen name="History" component={HistoryScreen} />
-      <Tab.Screen name="Goals" component={GoalsScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+  //<Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Screen name="Główna" component={MainScreen} />
+      <Tab.Screen name="Cytaty" component={QuotesScreen} />
+      <Tab.Screen name="Galeria" component={GalleryScreen} />
+      <Tab.Screen name="Historia" component={HistoryScreen} />
+      <Tab.Screen name="Cele" component={GoalsScreen} />
+      <Tab.Screen name="Ustawienia" component={SettingsScreen} />
     </Tab.Navigator>
   );
 }

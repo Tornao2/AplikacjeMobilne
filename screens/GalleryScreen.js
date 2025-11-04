@@ -10,15 +10,12 @@ export default function GalleryScreen() {
   const categories = {
     Faktury: [
       require("../assets/faktura.jpg"),
-
     ],
     Paragony: [
       require("../assets/paragon.jpg"),
-
     ],
     Wpłaty: [
       require("../assets/wpłata.jpg"),
-
     ],
   };
 
@@ -43,7 +40,7 @@ export default function GalleryScreen() {
 
   return (
     <View style={styles.container}>
-     <Text style={styles.title}>Galeria dokumentów</Text>
+     <Text style={styles.title}>Galeria</Text>
 
       {/* Przełączanie kategorii */}
       <View style={styles.buttonsRow}>
@@ -80,14 +77,14 @@ export default function GalleryScreen() {
       {/* Przyciski akcji */}
       <View style={styles.actions}>
         <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: "#007AFF" }]}
+          style={[styles.actionButton, { backgroundColor: "black" }]}
           onPress={() => Alert.alert("Aparat", "zrób zdjęcie i zapisz")}
         >
           <Text style={styles.actionText}>Zrób zdjęcie</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionButton, { backgroundColor: "#FF9500" }]}
+          style={[styles.actionButton, { backgroundColor: "black" }]}
           onPress={() => setEditMode(!editMode)}
         >
           <Text style={styles.actionText}>{editMode ? "Gotowe" : "Edytuj"}</Text>
@@ -118,19 +115,19 @@ export default function GalleryScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", paddingTop: 50, alignItems: "center" },
+  container: { flex: 1, backgroundColor: "white", paddingTop: 50, alignItems: "center" },
   title: { fontSize: 22, fontWeight: "700", marginBottom: 15 },
   buttonsRow: { flexDirection: "row", justifyContent: "center", marginBottom: 10 },
   categoryButton: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "white",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
     marginHorizontal: 5,
   },
-  activeButton: { backgroundColor: "#007AFF" },
-  categoryText: { color: "#333", fontWeight: "600" },
-  activeText: { color: "#fff" },
+  activeButton: { backgroundColor: "black" },
+  categoryText: { color: "dimgray", fontWeight: "600" }, // dark grey
+  activeText: { color: "white" },
   gallery: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center" },
   thumbnail: {
     width: 100,
@@ -138,7 +135,7 @@ const styles = StyleSheet.create({
     margin: 6,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "darkgray ",
   },
   actions: { flexDirection: "row", marginTop: 20 },
   actionButton: {
@@ -147,10 +144,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginHorizontal: 5,
   },
-  actionText: { color: "#fff", fontWeight: "600" },
+  actionText: { color: "white", fontWeight: "600" },
   modalContainer: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.9)",
+    //backgroundColor: "rgba(0,0,0,0.9)",// przeswitujący szary
+    backgroundColor: "black",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -163,5 +161,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
   },
-  deleteText: { color: "#fff", fontWeight: "700" },
+  deleteText: { color: "white", fontWeight: "700" },
 });

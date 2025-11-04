@@ -8,6 +8,7 @@ export default function EditScreen() {
   const [amount, setAmount] = useState("");
   const [entries, setEntries] = useState([]);
   const navigation = useNavigation();
+
   const addEntry = () => {
     if (!name || !amount) return alert("Uzupełnij wszystkie pola!");
     const newEntry = { id: Date.now(), name, amount: parseFloat(amount), type };
@@ -18,11 +19,7 @@ export default function EditScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>⬅ Powrót</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.title}>Edycja finansów</Text>
+      <Text style={styles.title}>Edycja</Text>
 
       {/* Przełącznik typu */}
       <View style={styles.switchRow}>
@@ -31,7 +28,7 @@ export default function EditScreen() {
           onPress={() => setType("wydatki")}
         >
           <Text style={[styles.switchText, type === "wydatki" && styles.activeText]}>
-            💸 Wydatki
+            Wydatki
           </Text>
         </TouchableOpacity>
 
@@ -40,19 +37,10 @@ export default function EditScreen() {
           onPress={() => setType("dochody")}
         >
           <Text style={[styles.switchText, type === "dochody" && styles.activeText]}>
-            💰 Dochody
+            Dochody
           </Text>
         </TouchableOpacity>
       </View>
-        <TouchableOpacity
-          style={[styles.switchButton, type === "dochody" && styles.active]}
-          onPress={() => setType("dochody")}
-        >
-          <Text style={[styles.switchText, type === "dochody" && styles.activeText]}>
-            💰 Dochody
-          </Text>
-        </TouchableOpacity>
-
 
       {/* Formularz dodania */}
       <TextInput
@@ -70,10 +58,10 @@ export default function EditScreen() {
       />
 
       <TouchableOpacity style={styles.addButton} onPress={addEntry}>
-        <Text style={styles.addButtonText}>➕ Dodaj {type}</Text>
+        <Text style={styles.addButtonText}>Dodaj {type}</Text>
       </TouchableOpacity>
 
-      {/* Lista */}
+      {/* Lista wpisów */}
       <FlatList
         data={entries}
         keyExtractor={(item) => item.id.toString()}
@@ -88,55 +76,73 @@ export default function EditScreen() {
           </View>
         )}
       />
+
+      {/* Przycisk powrotu na dole */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>Powrót</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", padding: 20, paddingTop: 40 },
+  container: { flex: 1, backgroundColor: "white", padding: 20, paddingTop: 40 },
   title: { fontSize: 22, fontWeight: "700", textAlign: "center", marginBottom: 20 },
   switchRow: { flexDirection: "row", justifyContent: "center", marginBottom: 15 },
   switchButton: {
     borderWidth: 1,
-    borderColor: "#007AFF",
+    borderColor: "black",
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 20,
     marginHorizontal: 5,
   },
-  switchText: { color: "#007AFF", fontWeight: "600" },
-  active: { backgroundColor: "#007AFF" },
-  activeText: { color: "#fff" },
+  switchText: { color: "black", fontWeight: "600" },
+  active: { backgroundColor: "black" },
+  activeText: { color: "white" },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "darkgrey",
     borderRadius: 8,
     padding: 10,
     marginVertical: 5,
   },
   addButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "black",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
   },
-  addButtonText: { color: "#fff", fontWeight: "700" },
+  addButtonText: { color: "white", fontWeight: "700" },
   itemRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: "dimgray",
     paddingVertical: 8,
   },
-    backButton: {
-      alignSelf: "flex-start",
-      marginBottom: 10,
-      paddingHorizontal: 10,
-    },
-backText: { color: "#007AFF", fontWeight: "600", fontSize: 16 },
-
-
   itemText: { fontSize: 16 },
   itemType: { fontWeight: "600" },
+
+  footer: {
+    marginTop: "auto",
+    alignItems: "center",
+    paddingVertical: 15,
+  },
+  backButton: {
+    backgroundColor: "black",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    alignItems: "center",
+
+  },
+  backText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 16,
+  },
 });
