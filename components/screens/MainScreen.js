@@ -48,17 +48,16 @@ export default function MainScreen() {
 
   return (
     <ScrollView
-      style={{ backgroundColor: theme.colors.background }}
-      contentContainerStyle={{ ...styles.container, flexGrow: 1, backgroundColor: theme.colors.background }}
+      contentContainerStyle={styles.container}
     >
       <View style={styles.periodButtons}>
         {["dzień", "miesiąc", "rok"].map((p) => (
           <TouchableOpacity
             key={p}
-            style={[styles.periodButton, period === p && styles.activePeriod]}
+            style={[theme.input, period === p && styles.activePeriod]}
             onPress={() => setPeriod(p)}
           >
-            <Text style={[styles.periodText, period === p && styles.activePeriodText]}>
+            <Text style={[theme.basicTextStyle, period === p && styles.activePeriodText]}>
               {p.charAt(0).toUpperCase() + p.slice(1)}
             </Text>
           </TouchableOpacity>
@@ -73,24 +72,22 @@ export default function MainScreen() {
           legendFontColor: theme.colors.text,
           legendFontSize: 14,
         }))}
-        width={screenWidth - 40}
+        style = {styles.pieChart}
+        width={screenWidth}
         height={250}
         accessor="population"
         backgroundColor="transparent"
-        paddingLeft="90"
         chartConfig={{ color: () => theme.colors.text }}
         hasLegend={false}
-        center={[0, 0]}
-        absolute
       />
 
       <View style={styles.totalRow}>
         <Text style={styles.totalText}>Łączna suma dochodów: {total} zł</Text>
         <TouchableOpacity
-          style={styles.editButton}
+          style={theme.button}
           onPress={() => navigation.navigate("Edit")}
         >
-          <Text style={styles.editButtonText}>Edytuj</Text>
+          <Text style={theme.buttonText}>Edytuj</Text>
         </TouchableOpacity>
       </View>
 
@@ -100,7 +97,7 @@ export default function MainScreen() {
           return (
             <View key={index} style={styles.listItem}>
               <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemPercent}>{percent}%</Text>
+              <Text style={theme.basicTextStyle}>{percent}%</Text>
               <Text style={styles.itemAmount}>{item.amount} zł</Text>
             </View>
           );

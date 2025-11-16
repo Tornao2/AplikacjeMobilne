@@ -12,7 +12,7 @@ export default function QuotesScreen() {
         &quot;Nie oszczędzaj tego, co zostaje po wszystkich wydatkach, lecz wydawaj,
         co zostaje po odłożeniu oszczędności.&quot;
       </Text>
-      <Text style={styles.author}>Warren E. Buffett</Text>
+      <Text style={theme.basicTextStyle}>Warren E. Buffett</Text>
     </View>
   );
 }

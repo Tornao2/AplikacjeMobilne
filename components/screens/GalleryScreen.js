@@ -36,17 +36,17 @@ export default function GalleryScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Galeria</Text>
+    <View style={theme.containerStyle}>
+      <Text style={theme.titleStyle}>Galeria</Text>
 
       <View style={styles.buttonsRow}>
         {Object.keys(categories).map((cat) => (
           <TouchableOpacity
             key={cat}
-            style={[styles.categoryButton, selectedCategory === cat && styles.activeButton]}
+            style={[theme.input, selectedCategory === cat && styles.activeButton]}
             onPress={() => setSelectedCategory(cat)}
           >
-            <Text style={[styles.categoryText, selectedCategory === cat && styles.activeText]}>
+            <Text style={[theme.basicTextStyle, selectedCategory === cat && styles.activeText]}>
               {cat}
             </Text>
           </TouchableOpacity>
@@ -62,12 +62,12 @@ export default function GalleryScreen() {
       </ScrollView>
 
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.actionButton} onPress={() => Alert.alert("Aparat", "Zrób zdjęcie i zapisz")}>
-          <Text style={styles.actionText}>Zrób zdjęcie</Text>
+        <TouchableOpacity style={theme.input} onPress={() => Alert.alert("Aparat", "Zrób zdjęcie i zapisz")}>
+          <Text style={theme.basicTextStyle}>Zrób zdjęcie</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton} onPress={() => setEditMode(!editMode)}>
-          <Text style={styles.actionText}>{editMode ? "Gotowe" : "Edytuj"}</Text>
+        <TouchableOpacity style={theme.input} onPress={() => setEditMode(!editMode)}>
+          <Text style={theme.basicTextStyle}>{editMode ? "Gotowe" : "Edytuj"}</Text>
         </TouchableOpacity>
       </View>
 
@@ -77,7 +77,7 @@ export default function GalleryScreen() {
           <Image source={selectedImage} style={styles.fullImage} resizeMode="contain" />
           {editMode && (
             <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(selectedImage)}>
-              <Text style={styles.deleteText}>Usuń</Text>
+              <Text style={theme.buttonText}>Usuń</Text>
             </TouchableOpacity>
           )}
         </View>

@@ -14,19 +14,21 @@ export const ThemeProvider = ({ children }) => {
         buttonText: "#fff",
       },
       input: {
-        background: darkMode ? "#111" : "#f5f5f5",
-        color: darkMode ? "#fff" : "#000",
-        placeholderColor: darkMode ? "#aaa" : "#555",
+        backgroundColor: darkMode ? "#3d3b3bff" : "#f5f5f5",
         borderColor: darkMode ? "#555" : "#d3d3d3",
         borderRadius: 8,
         padding: 10,
         borderWidth: 1,
+        marginBottom: 12,
+        marginHorizontal: 5,
       },
       button: {
         backgroundColor: darkMode ? "#444" : "#000",
         padding: 12,
         borderRadius: 8,
         alignItems: "center",
+        marginBottom: 8,
+        marginHorizontal: 5,
       },
       buttonText: { color: "#fff", fontWeight: "700" },
       statusBarStyle: darkMode ? "light-content" : "dark-content",
@@ -36,6 +38,17 @@ export const ThemeProvider = ({ children }) => {
         padding: 20,
         backgroundColor: darkMode ? "#000" : "#fff",
       },
+      titleStyle: {
+        fontSize: 24,
+        fontWeight: "700",
+        marginBottom: 15,
+        color: darkMode ? "#fff" : "#000",
+      },
+      basicTextStyle: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: darkMode ? "#fff" : "#000", 
+      }
     };
 
   return (

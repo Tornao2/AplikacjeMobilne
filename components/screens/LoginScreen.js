@@ -34,26 +34,24 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.Welcome}>Witaj w aplikacji Kontrola wydatków</Text>
-      <Text style={styles.title}>{isRegister ? "Rejestracja" : "Logowanie"}</Text>
+      <Text style={theme.titleStyle}>{isRegister ? "Rejestracja" : "Logowanie"}</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor={theme.colors.border}
         onChangeText={setEmail}
         value={email}
       />
       <TextInput
         style={styles.input}
         placeholder="Hasło"
-        placeholderTextColor={theme.colors.border}
         secureTextEntry
         onChangeText={setPassword}
         value={password}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>
+        <Text style={theme.buttonText}>
           {isRegister ? "Zarejestruj się" : "Zaloguj"}
         </Text>
       </TouchableOpacity>

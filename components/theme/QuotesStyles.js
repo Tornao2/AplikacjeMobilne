@@ -14,9 +14,4 @@ export const createStyles = (theme) =>
       marginBottom: 20,
       lineHeight: 28,
     },
-    author: {
-      fontSize: 16,
-      fontWeight: "600",
-      color: theme.colors.text,
-    },
   });

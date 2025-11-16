@@ -56,50 +56,48 @@ export default function GoalsScreen() {
       <Text style={styles.title}>Twoje cele</Text>
 
       {showAddForm && (
-        <View style={styles.addContainer}>
+        <View style={[theme.input, theme.colors.background]}>
           <TextInput
             placeholder="Nazwa celu"
-            placeholderTextColor={theme.input.placeholderColor}
-            style={styles.input}
+            style={theme.input}
             value={newGoal}
             onChangeText={setNewGoal}
           />
           <TextInput
             placeholder="Kwota docelowa"
-            placeholderTextColor={theme.input.placeholderColor}
-            style={styles.input}
+            style={theme.input}
             keyboardType="numeric"
             value={target}
             onChangeText={setTarget}
           />
           <View style={styles.formButtons}>
-            <TouchableOpacity style={styles.saveButton} onPress={addGoal}>
-              <Text style={styles.saveButtonText}>Zapisz cel</Text>
+            <TouchableOpacity style={theme.button} onPress={addGoal}>
+              <Text style={theme.buttonText}>Zapisz cel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.saveButton, { backgroundColor: "red" }]}
               onPress={() => setShowAddForm(false)}
             >
-              <Text style={styles.saveButtonText}>Anuluj</Text>
+              <Text style={theme.buttonText}>Anuluj</Text>
             </TouchableOpacity>
           </View>
         </View>
       )}
 
       {!showAddForm && (
-        <TouchableOpacity style={styles.addGoalButton} onPress={() => setShowAddForm(true)}>
-          <Text style={styles.addGoalButtonText}>Dodaj cel</Text>
+        <TouchableOpacity style={theme.button} onPress={() => setShowAddForm(true)}>
+          <Text style={theme.buttonText}>Dodaj cel</Text>
         </TouchableOpacity>
       )}
 
-      <ScrollView style={styles.scroll}>
+      <ScrollView>
         {goals.map((goal, index) => {
           const progress = (goal.saved / goal.target) * 100;
           return (
             <View key={index} style={styles.goalCard}>
               <View style={styles.goalHeader}>
-                <Text style={styles.goalName}>{goal.name}</Text>
-                <Text style={styles.goalAmount}>
+                <Text style={theme.basicTextStyle}>{goal.name}</Text>
+                <Text style={theme.basicTextStyle}>
                   {goal.saved} zł ({progress.toFixed(2)}%) ➜ {goal.target} zł
                 </Text>
               </View>
@@ -113,21 +111,21 @@ export default function GoalsScreen() {
                   style={[styles.saveButton, { backgroundColor: "lime" }]}
                   onPress={() => updateProgress(index, 100)}
                 >
-                  <Text style={styles.saveButtonText}>+100 zł</Text>
+                  <Text style={theme.buttonText}>+100 zł</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={[styles.saveButton, { backgroundColor: "orange" }]}
                   onPress={() => updateProgress(index, -100)}
                 >
-                  <Text style={styles.saveButtonText}>-100 zł</Text>
+                  <Text style={theme.buttonText}>-100 zł</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={[styles.saveButton, { backgroundColor: "red" }]}
                   onPress={() => deleteGoal(index)}
                 >
-                  <Text style={styles.saveButtonText}>Usuń cel</Text>
+                  <Text style={theme.buttonText}>Usuń cel</Text>
                 </TouchableOpacity>
               </View>
             </View>

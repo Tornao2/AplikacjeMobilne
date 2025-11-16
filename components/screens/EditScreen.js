@@ -29,10 +29,10 @@ export default function EditScreen() {
         {["wydatki", "dochody"].map((t) => (
           <TouchableOpacity
             key={t}
-            style={[styles.switchButton, type === t && styles.activeSwitch]}
+            style={[theme.input, type === t && styles.activeSwitch]}
             onPress={() => setType(t)}
           >
-            <Text style={[styles.switchText, type === t && styles.activeSwitchText]}>
+            <Text style={theme.basicTextStyle}>
               {t.charAt(0).toUpperCase() + t.slice(1)}
             </Text>
           </TouchableOpacity>
@@ -40,23 +40,21 @@ export default function EditScreen() {
       </View>
 
       <TextInput
-        style={styles.input}
+        style={theme.input}
         placeholder={`Nazwa ${type === "wydatki" ? "wydatku" : "dochodu"}`}
-        placeholderTextColor={theme.input.placeholderColor}
         value={name}
         onChangeText={setName}
       />
       <TextInput
-        style={styles.input}
+        style={theme.input}
         placeholder="Kwota (zł)"
-        placeholderTextColor={theme.input.placeholderColor}
         keyboardType="numeric"
         value={amount}
         onChangeText={setAmount}
       />
 
-      <TouchableOpacity style={styles.button} onPress={addEntry}>
-        <Text style={styles.buttonText}>Dodaj {type}</Text>
+      <TouchableOpacity style={theme.button} onPress={addEntry}>
+        <Text style={theme.buttonText}>Dodaj {type}</Text>
       </TouchableOpacity>
 
       <FlatList
@@ -64,8 +62,8 @@ export default function EditScreen() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.itemRow}>
-            <Text style={styles.itemText}>{item.name} - {item.amount} zł</Text>
-            <Text style={[styles.itemType, { color: item.type === "dochody" ? theme.colors.primary : theme.colors.border }]}>
+            <Text style={theme.basicTextStyle}>{item.name} - {item.amount} zł</Text>
+            <Text style={{ color: item.type === "dochody" ? theme.colors.primary : theme.colors.border }}>
               {item.type.toUpperCase()}
             </Text>
           </View>
@@ -73,8 +71,8 @@ export default function EditScreen() {
       />
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Powrót</Text>
+        <TouchableOpacity style={theme.input} onPress={() => navigation.goBack()}>
+          <Text style={theme.buttonText}>Powrót</Text>
         </TouchableOpacity>
       </View>
     </View>
