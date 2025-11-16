@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-
-export default function LoginScreen({ navigation }) {
-  const [isRegister, setIsRegister] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+import { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { useTheme } from "../theme/ThemeContext";
+import { createStyles } from "../theme/LoginStyles";
 
 //logowanie na sztywno
 
@@ -23,6 +19,13 @@ export default function LoginScreen({ navigation }) {
 //    }
 //  };
 
+export default function LoginScreen({ navigation }) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
+  const [isRegister, setIsRegister] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
     navigation.replace("MainTabs");
@@ -36,13 +39,14 @@ export default function LoginScreen({ navigation }) {
       <TextInput
         style={styles.input}
         placeholder="Email"
+        placeholderTextColor={theme.colors.border}
         onChangeText={setEmail}
         value={email}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Hasło"
+        placeholderTextColor={theme.colors.border}
         secureTextEntry
         onChangeText={setPassword}
         value={password}
@@ -56,64 +60,11 @@ export default function LoginScreen({ navigation }) {
 
       <TouchableOpacity onPress={() => setIsRegister(!isRegister)}>
         <Text style={styles.link}>
-          {isRegister ? "Masz konto? Zaloguj się" : "Nie masz konta? Zarejestruj się"}
+          {isRegister
+            ? "Masz konto? Zaloguj się"
+            : "Nie masz konta? Zarejestruj się"}
         </Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  Welcome: {
-    fontSize: 30,
-    fontWeight: '800',
-    marginBottom: 30,
-    color: 'gold',
-    textAlign: 'center',
-    width: '90%',
-  },
-
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'white',
-  },
-
-  title: {
-    fontSize: 26,
-    fontWeight: '700',
-    marginBottom: 30,
-    color: 'black',
-  },
-
-  input: {
-    width: '90%',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
-  },
-
-  button: {
-    backgroundColor: 'black',
-    padding: 14,
-    borderRadius: 8,
-    width: '90%',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-
-  buttonText: {
-    color: 'white',
-    fontWeight: '600',
-  },
-
-  link: {
-    marginTop: 15,
-    color: 'black',
-    fontSize: 14,
-  },
-});

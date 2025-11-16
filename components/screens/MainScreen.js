@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from "react-native";
+import { useState } from "react";
+import { View, Text, TouchableOpacity, ScrollView, Dimensions } from "react-native";
 import { PieChart } from "react-native-chart-kit";
 import { useNavigation } from "@react-navigation/native";
-
-const screenWidth = Dimensions.get("window").width;
+import { useTheme } from "../theme/ThemeContext";
+import { createStyles } from "../theme/MainStyles";
 
 export default function MainScreen() {
   const navigation = useNavigation();
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   const [period, setPeriod] = useState("miesiąc");
 
-  // Dane do wykresu
- const dataSets = {
-
+  const dataSets = {
     dzień: [
       { name: "Artykuły spożywcze", amount: 500, color: "red" },
       { name: "Transport", amount: 20, color: "green" },
     ],
-
     miesiąc: [
       { name: "Artykuły spożywcze", amount: 500, color: "red" },
       { name: "Kredyty", amount: 1200, color: "orange" },
@@ -28,7 +28,6 @@ export default function MainScreen() {
       { name: "Oszczędności", amount: 500, color: "green" },
       { name: "Wynajem", amount: 1000, color: "gray" },
     ],
-
     rok: [
       { name: "Artykuły spożywcze", amount: 500, color: "red" },
       { name: "Kredyty", amount: 1200, color: "orange" },
@@ -43,15 +42,15 @@ export default function MainScreen() {
     ],
   };
 
-
   const currentData = dataSets[period];
   const total = currentData.reduce((sum, item) => sum + item.amount, 0);
+  const screenWidth = Dimensions.get("window").width;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-
-      {/* Przyciski okresu */}
-
+    <ScrollView
+      style={{ backgroundColor: theme.colors.background }}
+      contentContainerStyle={{ ...styles.container, flexGrow: 1, backgroundColor: theme.colors.background }}
+    >
       <View style={styles.periodButtons}>
         {["dzień", "miesiąc", "rok"].map((p) => (
           <TouchableOpacity
@@ -66,13 +65,12 @@ export default function MainScreen() {
         ))}
       </View>
 
-      {/* Wykres */}
       <PieChart
         data={currentData.map((item) => ({
           name: item.name,
           population: item.amount,
           color: item.color,
-          legendFontColor: "dimgray",
+          legendFontColor: theme.colors.text,
           legendFontSize: 14,
         }))}
         width={screenWidth - 40}
@@ -80,15 +78,12 @@ export default function MainScreen() {
         accessor="population"
         backgroundColor="transparent"
         paddingLeft="90"
-        chartConfig={{
-          color: () => `dimgray`,
-        }}
+        chartConfig={{ color: () => theme.colors.text }}
         hasLegend={false}
         center={[0, 0]}
         absolute
       />
 
-      {/* Suma i przycisk edycji */}
       <View style={styles.totalRow}>
         <Text style={styles.totalText}>Łączna suma dochodów: {total} zł</Text>
         <TouchableOpacity
@@ -99,7 +94,6 @@ export default function MainScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Lista wydatków */}
       <View style={styles.listContainer}>
         {currentData.map((item, index) => {
           const percent = ((item.amount / total) * 100).toFixed(2);
@@ -115,45 +109,3 @@ export default function MainScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { alignItems: "center", backgroundColor: "white", paddingVertical: 40 },
-  periodButtons: { flexDirection: "row", justifyContent: "center", marginBottom: 15 },
-  periodButton: {
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 8,
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    marginHorizontal: 5,
-  },
-  periodText: { color: "black", fontWeight: "600" },
-  activePeriod: { backgroundColor: "black" },
-  activePeriodText: { color: "white" },
-  totalRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "90%",
-    marginTop: 20,
-  },
-  totalText: { fontSize: 18, fontWeight: "600" },
-  editButton: {
-    backgroundColor: "black",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-  },
-  editButtonText: { color: "white", fontWeight: "600" },
-  listContainer: { width: "90%", marginTop: 20 },
-  listItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
-  },
-  itemName: { flex: 1, fontWeight: "600" },
-  itemPercent: { width: 60, textAlign: "center" },
-  itemAmount: { width: 90, textAlign: "right" },
-});

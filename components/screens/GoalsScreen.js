@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from "react-native";
+import { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { useTheme } from "../theme/ThemeContext";
+import { createStyles } from "../theme/GoalsStyles";
 
 export default function GoalsScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   const [goals, setGoals] = useState([
     { name: "Samochód", saved: 5000, target: 10000 },
     { name: "Wakacje", saved: 1000, target: 5000 },
-    { name: "Mieszkanie", saved: 0, target: 350000 }
+    { name: "Mieszkanie", saved: 0, target: 350000 },
   ]);
 
   const [showAddForm, setShowAddForm] = useState(false);
@@ -14,8 +19,7 @@ export default function GoalsScreen() {
 
   const addGoal = () => {
     if (!newGoal || !target) return alert("Podaj nazwę i kwotę celu.");
-    const goal = { name: newGoal, saved: 0, target: parseFloat(target) };
-    setGoals([...goals, goal]);
+    setGoals([...goals, { name: newGoal, saved: 0, target: parseFloat(target) }]);
     setNewGoal("");
     setTarget("");
     setShowAddForm(false);
@@ -51,17 +55,18 @@ export default function GoalsScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Twoje cele</Text>
 
-      {/* Dodawanie nowego celu */}
       {showAddForm && (
         <View style={styles.addContainer}>
           <TextInput
             placeholder="Nazwa celu"
+            placeholderTextColor={theme.input.placeholderColor}
             style={styles.input}
             value={newGoal}
             onChangeText={setNewGoal}
           />
           <TextInput
             placeholder="Kwota docelowa"
+            placeholderTextColor={theme.input.placeholderColor}
             style={styles.input}
             keyboardType="numeric"
             value={target}
@@ -81,17 +86,12 @@ export default function GoalsScreen() {
         </View>
       )}
 
-      {/* Przycisk „Dodaj cel” */}
       {!showAddForm && (
-        <TouchableOpacity
-          style={styles.addGoalButton}
-          onPress={() => setShowAddForm(true)}
-        >
+        <TouchableOpacity style={styles.addGoalButton} onPress={() => setShowAddForm(true)}>
           <Text style={styles.addGoalButtonText}>Dodaj cel</Text>
         </TouchableOpacity>
       )}
 
-      {/* Lista celów */}
       <ScrollView style={styles.scroll}>
         {goals.map((goal, index) => {
           const progress = (goal.saved / goal.target) * 100;
@@ -137,66 +137,3 @@ export default function GoalsScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "white", padding: 20, paddingTop: 50 },
-  title: { fontSize: 22, fontWeight: "700", marginBottom: 15, textAlign: "center" },
-
-  addGoalButton: {
-    backgroundColor: "black",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  addGoalButtonText: { color: "white", fontWeight: "700", fontSize: 16 },
-
-  addContainer: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 15,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "dimgray",
-    borderRadius: 8,
-    padding: 10,
-    marginVertical: 5,
-  },
-  formButtons: { flexDirection: "row", justifyContent: "space-between" },
-  saveButton: {
-    backgroundColor: "black",
-    padding: 10,
-    borderRadius: 8,
-    flex: 1,
-    alignItems: "center",
-    marginHorizontal: 4,
-  },
-  saveButtonText: { color: "white", fontWeight: "600" },
-
-  scroll: { flex: 1 },
-  goalCard: {
-    backgroundColor: "#white",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 15,
-    borderWidth: 1,
-    borderColor: "darkgray",
-  },
-  goalHeader: { marginBottom: 10 },
-  goalName: { fontSize: 18, fontWeight: "600" },
-  goalAmount: { color: "black" },
-  progressBar: {
-    height: 10,
-    backgroundColor: "white",
-    borderRadius: 5,
-    overflow: "hidden",
-  },
-  progressFill: { height: "100%", backgroundColor: "lime" },
-  actionsRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-});
