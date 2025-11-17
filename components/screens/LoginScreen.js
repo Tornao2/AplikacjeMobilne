@@ -41,6 +41,7 @@ export default function LoginScreen({ navigation }) {
         placeholder="Email"
         onChangeText={setEmail}
         value={email}
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
         style={styles.input}
@@ -48,6 +49,7 @@ export default function LoginScreen({ navigation }) {
         secureTextEntry
         onChangeText={setPassword}
         value={password}
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>

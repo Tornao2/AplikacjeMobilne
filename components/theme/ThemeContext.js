@@ -16,6 +16,8 @@ export const ThemeProvider = ({ children }) => {
       input: {
         backgroundColor: darkMode ? "#3d3b3bff" : "#f5f5f5",
         borderColor: darkMode ? "#555" : "#d3d3d3",
+        color: darkMode ? "#fff" : "#000",
+        placeholderTextColor: "#fff",
         borderRadius: 8,
         padding: 10,
         borderWidth: 1,

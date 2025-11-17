@@ -45,12 +45,14 @@ export default function SettingsScreen() {
         value={editName}
         onChangeText={setEditName}
         placeholder="Nazwa użytkownika"
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
         style={styles.input}
         value={editEmail}
         onChangeText={setEditEmail}
         placeholder="E-mail"
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
         style={styles.input}
@@ -58,6 +60,7 @@ export default function SettingsScreen() {
         onChangeText={setEditPassword}
         placeholder="Hasło"
         secureTextEntry
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>
         <Text style={theme.buttonText}>Zapisz zmiany</Text>

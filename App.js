@@ -4,6 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import { DataProvider } from "./components/screens/DataContext";
+
 import { ThemeProvider, useTheme } from "./components/theme/ThemeContext";
 
 import LoginScreen from "./components/screens/LoginScreen";
@@ -63,9 +65,11 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <NavigationContainer>
-        <AppContent />
-      </NavigationContainer>
+      <DataProvider>
+        <NavigationContainer>
+          <AppContent />
+        </NavigationContainer>
+      </DataProvider>
     </ThemeProvider>
   );
 }

@@ -4,10 +4,14 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/EditStyles";
 
+import { useData } from "./DataContext";
+
 export default function EditScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const navigation = useNavigation();
+
+  const { addToList } = useData();
 
   const [type, setType] = useState("wydatki");
   const [name, setName] = useState("");
@@ -16,9 +20,18 @@ export default function EditScreen() {
 
   const addEntry = () => {
     if (!name || !amount) return alert("Uzupełnij wszystkie pola!");
-    setEntries([...entries, { id: Date.now(), name, amount: parseFloat(amount), type }]);
+    addToList({
+      id: Date.now(),
+      name,
+      amount: parseFloat(amount),
+      date: new Date().toISOString().split("T")[0],
+      type,
+      color: "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0"),
+    });
     setName("");
     setAmount("");
+
+    navigation.goBack();
   };
 
   return (
@@ -44,6 +57,7 @@ export default function EditScreen() {
         placeholder={`Nazwa ${type === "wydatki" ? "wydatku" : "dochodu"}`}
         value={name}
         onChangeText={setName}
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
         style={theme.input}
@@ -51,6 +65,7 @@ export default function EditScreen() {
         keyboardType="numeric"
         value={amount}
         onChangeText={setAmount}
+        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
 
       <TouchableOpacity style={theme.button} onPress={addEntry}>

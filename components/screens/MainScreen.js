@@ -5,6 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/MainStyles";
 
+import { useData } from "./DataContext";
+
 export default function MainScreen() {
   const navigation = useNavigation();
   const { theme } = useTheme();
@@ -12,39 +14,42 @@ export default function MainScreen() {
 
   const [period, setPeriod] = useState("miesiąc");
 
-  const dataSets = {
-    dzień: [
-      { name: "Artykuły spożywcze", amount: 500, color: "red" },
-      { name: "Transport", amount: 20, color: "green" },
-    ],
-    miesiąc: [
-      { name: "Artykuły spożywcze", amount: 500, color: "red" },
-      { name: "Kredyty", amount: 1200, color: "orange" },
-      { name: "Leasingi", amount: 800, color: "purple" },
-      { name: "Transport", amount: 300, color: "blue" },
-      { name: "Czynsz", amount: 1000, color: "pink" },
-      { name: "Media", amount: 500, color: "yellow" },
-      { name: "Rozrywka", amount: 300, color: "black" },
-      { name: "Oszczędności", amount: 500, color: "green" },
-      { name: "Wynajem", amount: 1000, color: "gray" },
-    ],
-    rok: [
-      { name: "Artykuły spożywcze", amount: 500, color: "red" },
-      { name: "Kredyty", amount: 1200, color: "orange" },
-      { name: "Leasingi", amount: 10000, color: "purple" },
-      { name: "Transport", amount: 3600, color: "blue" },
-      { name: "Czynsz", amount: 12000, color: "pink" },
-      { name: "Media", amount: 3000, color: "yellow" },
-      { name: "Rozrywka", amount: 1800, color: "black" },
-      { name: "Podróże", amount: 8000, color: "cyan" },
-      { name: "Oszczędności", amount: 6000, color: "green" },
-      { name: "Wynajem", amount: 12000, color: "gray" },
-    ],
-  };
+  const {dataSets} = useData();
 
-  const currentData = dataSets[period];
-  const total = currentData.reduce((sum, item) => sum + item.amount, 0);
+  //const currentData = dataSets[period];
+  //const total = currentData.reduce((sum, item) => sum + item.amount, 0);
   const screenWidth = Dimensions.get("window").width;
+
+  const now = new Date();
+
+  function filterByPeriod(list) {
+    return (list || []).filter(item => {
+      const d = new Date(item.date);
+
+      if (period === "dzień") {
+        return (
+          d.getDate() === now.getDate() &&
+          d.getMonth() === now.getMonth() &&
+          d.getFullYear() === now.getFullYear()
+        );
+      }
+
+      if (period === "miesiąc") {
+        return (
+          d.getMonth() === now.getMonth() &&
+          d.getFullYear() === now.getFullYear()
+        );
+      }
+
+      if (period === "rok") {
+        return d.getFullYear() === now.getFullYear();
+      }
+
+      return true;
+    });
+  }
+  const filteredData = filterByPeriod(dataSets.list || []);
+  const total = filteredData.reduce((sum, item) => sum + item.amount, 0);
 
   return (
     <ScrollView
@@ -65,7 +70,7 @@ export default function MainScreen() {
       </View>
 
       <PieChart
-        data={currentData.map((item) => ({
+        data={filteredData.map((item) => ({
           name: item.name,
           population: item.amount,
           color: item.color,
@@ -91,8 +96,12 @@ export default function MainScreen() {
         </TouchableOpacity>
       </View>
 
+
+      
+
+
       <View style={styles.listContainer}>
-        {currentData.map((item, index) => {
+        {filteredData.map((item, index) => {
           const percent = ((item.amount / total) * 100).toFixed(2);
           return (
             <View key={index} style={styles.listItem}>
