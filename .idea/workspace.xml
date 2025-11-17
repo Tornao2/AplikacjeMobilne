@@ -6,14 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="fbca975b-0c5a-46e9-8d05-205e1d0baa1d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/EditScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/EditScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/GalleryScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/GalleryScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/GoalsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/GoalsScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/MainScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/MainScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/QuotesScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/QuotesScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/screens/HistoryScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/screens/HistoryScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/theme/HistoryStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/theme/HistoryStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/theme/ThemeContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/theme/ThemeContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,5 +72,16 @@
       <updated>1761513280937</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -36,7 +36,6 @@ export const ThemeProvider = ({ children }) => {
       statusBarStyle: darkMode ? "light-content" : "dark-content",
       containerStyle: {
         flex: 1,
-        alignItems: "center",
         padding: 20,
         backgroundColor: darkMode ? "#000" : "#fff",
       },
