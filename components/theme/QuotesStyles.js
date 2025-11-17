@@ -4,6 +4,7 @@ export const createStyles = (theme) =>
   StyleSheet.create({
     container: {
       justifyContent: "center",
+      alignItems: "center",
       ...theme.containerStyle,
     },
     quote: {

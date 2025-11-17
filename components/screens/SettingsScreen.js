@@ -28,7 +28,8 @@ export default function SettingsScreen() {
     alert("Zapisano zmiany");
   };
   return (
-    <View style={theme.containerStyle}>
+    <View style={[theme.containerStyle, {
+      alignItems: "center"}]}>
       <Text style={theme.titleStyle}>Ustawienia</Text>
       <Image source={user.avatar} style={styles.avatar} />
       <View style={styles.themeRow}>

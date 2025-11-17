@@ -19,7 +19,7 @@ export default function HistoryScreen() {
 
   const filtered = list
     .filter((item) => {
-      if (typeFilter !== "wszystko" && item.type !== typeFilter) return false;
+      if (typeFilter !== "Wszystko" && item.type !== typeFilter) return false;
       if (dateFrom && item.date < dateFrom) return false;
       if (dateTo && item.date > dateTo) return false;
       return true;

@@ -86,7 +86,7 @@ export default function EditScreen() {
       />
 
       <View style={styles.footer}>
-        <TouchableOpacity style={theme.input} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={theme.button} onPress={() => navigation.goBack()}>
           <Text style={theme.buttonText}>Powrót</Text>
         </TouchableOpacity>
       </View>
