@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TextInput, TouchableOpacity} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../theme/ThemeContext";
-import { createStyles } from "../theme/EditStyles";
 
 import { useData } from "./DataContext";
 
 export default function EditScreen() {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
   const navigation = useNavigation();
 
   const { addToList } = useData();
@@ -16,7 +14,6 @@ export default function EditScreen() {
   const [type, setType] = useState("wydatki");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
-  const [entries, setEntries] = useState([]);
 
   const addEntry = () => {
     if (!name || !amount) return alert("Uzupełnij wszystkie pola!");
@@ -30,63 +27,45 @@ export default function EditScreen() {
     });
     setName("");
     setAmount("");
-
     navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Edycja</Text>
-
-      <View style={styles.switchRow}>
+    <View style={theme.centeredContainerStyle}>
+      <Text style={theme.titleStyle}>Edycja</Text>
+      <View style={theme.spacedOutRow}>
         {["wydatki", "dochody"].map((t) => (
           <TouchableOpacity
             key={t}
-            style={[theme.input, type === t && styles.activeSwitch]}
+            style={[theme.button, type === t && theme.pressedButton]}
             onPress={() => setType(t)}
           >
-            <Text style={theme.basicTextStyle}>
+            <Text style={[theme.buttonText]}>
               {t.charAt(0).toUpperCase() + t.slice(1)}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
-
       <TextInput
-        style={theme.input}
+        style={[theme.input, theme.width90]}
         placeholder={`Nazwa ${type === "wydatki" ? "wydatku" : "dochodu"}`}
         value={name}
         onChangeText={setName}
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
-        style={theme.input}
+        style={[theme.input, theme.width90]}
         placeholder="Kwota (zł)"
         keyboardType="numeric"
         value={amount}
         onChangeText={setAmount}
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
-
-      <TouchableOpacity style={theme.button} onPress={addEntry}>
+      <TouchableOpacity style={[theme.button, theme.width90]} onPress={addEntry}>
         <Text style={theme.buttonText}>Dodaj {type}</Text>
       </TouchableOpacity>
-
-      <FlatList
-        data={entries}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.itemRow}>
-            <Text style={theme.basicTextStyle}>{item.name} - {item.amount} zł</Text>
-            <Text style={{ color: item.type === "dochody" ? theme.colors.primary : theme.colors.border }}>
-              {item.type.toUpperCase()}
-            </Text>
-          </View>
-        )}
-      />
-
-      <View style={styles.footer}>
-        <TouchableOpacity style={theme.button} onPress={() => navigation.goBack()}>
+      <View style={[theme.footer, theme.width90]}>
+        <TouchableOpacity style={[theme.button, theme.width90]} onPress={() => navigation.goBack()}>
           <Text style={theme.buttonText}>Powrót</Text>
         </TouchableOpacity>
       </View>

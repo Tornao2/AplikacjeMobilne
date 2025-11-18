@@ -13,13 +13,11 @@ export default function MainScreen() {
   const styles = createStyles(theme);
 
   const [period, setPeriod] = useState("miesiąc");
-
   const {dataSets} = useData();
 
   //const currentData = dataSets[period];
   //const total = currentData.reduce((sum, item) => sum + item.amount, 0);
   const screenWidth = Dimensions.get("window").width;
-
   const now = new Date();
 
   function filterByPeriod(list) {
@@ -33,18 +31,15 @@ export default function MainScreen() {
           d.getFullYear() === now.getFullYear()
         );
       }
-
       if (period === "miesiąc") {
         return (
           d.getMonth() === now.getMonth() &&
           d.getFullYear() === now.getFullYear()
         );
       }
-
       if (period === "rok") {
         return d.getFullYear() === now.getFullYear();
       }
-
       return true;
     });
   }
@@ -53,16 +48,16 @@ export default function MainScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={styles.container}
+      contentContainerStyle={theme.centeredContainerStyle}
     >
-      <View style={styles.periodButtons}>
+      <View style={theme.spacedOutRow}>
         {["dzień", "miesiąc", "rok"].map((p) => (
           <TouchableOpacity
             key={p}
-            style={[theme.input, period === p && styles.activePeriod]}
+            style={[theme.button, period === p && theme.pressedButton]}
             onPress={() => setPeriod(p)}
           >
-            <Text style={[theme.basicTextStyle, period === p && styles.activePeriodText]}>
+            <Text style={[theme.buttonText, period === p && styles.activePeriodText]}>
               {p.charAt(0).toUpperCase() + p.slice(1)}
             </Text>
           </TouchableOpacity>
@@ -77,7 +72,7 @@ export default function MainScreen() {
           legendFontColor: theme.colors.text,
           legendFontSize: 14,
         }))}
-        style = {styles.pieChart}
+        style = {theme.pieChart}
         width={screenWidth}
         height={250}
         accessor="population"
@@ -85,26 +80,12 @@ export default function MainScreen() {
         chartConfig={{ color: () => theme.colors.text }}
         hasLegend={false}
       />
-
-      <View style={styles.totalRow}>
-        <Text style={styles.totalText}>Łączna suma dochodów: {total} zł</Text>
-        <TouchableOpacity
-          style={theme.button}
-          onPress={() => navigation.navigate("Edit")}
-        >
-          <Text style={theme.buttonText}>Edytuj</Text>
-        </TouchableOpacity>
-      </View>
-
-
-      
-
-
-      <View style={styles.listContainer}>
+      <Text style={theme.biggerTextStyle}>Łączna suma dochodów: {total} zł</Text>
+      <View style={theme.width90}>
         {filteredData.map((item, index) => {
           const percent = ((item.amount / total) * 100).toFixed(2);
           return (
-            <View key={index} style={styles.listItem}>
+            <View key={index} style={theme.entryRow}>
               <Text style={styles.itemName}>{item.name}</Text>
               <Text style={theme.basicTextStyle}>{percent}%</Text>
               <Text style={styles.itemAmount}>{item.amount} zł</Text>
@@ -112,6 +93,12 @@ export default function MainScreen() {
           );
         })}
       </View>
+      <TouchableOpacity
+          style={[theme.button, theme.footer]}
+          onPress={() => navigation.navigate("Edit")}
+        >
+          <Text style={[theme.buttonText]}>Dodaj</Text>
+        </TouchableOpacity>
     </ScrollView>
   );
 }

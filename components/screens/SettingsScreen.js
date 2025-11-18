@@ -28,11 +28,10 @@ export default function SettingsScreen() {
     alert("Zapisano zmiany");
   };
   return (
-    <View style={[theme.containerStyle, {
-      alignItems: "center"}]}>
+    <View style={theme.centeredContainerStyle}>
       <Text style={theme.titleStyle}>Ustawienia</Text>
       <Image source={user.avatar} style={styles.avatar} />
-      <View style={styles.themeRow}>
+      <View style={[theme.spacedOutRow, theme.width90]}>
         <Text style={theme.basicTextStyle}>Motyw</Text>
         <Switch
           value={theme.darkMode}
@@ -42,28 +41,28 @@ export default function SettingsScreen() {
         />
       </View>
       <TextInput
-        style={styles.input}
+        style={[theme.input, theme.width90]}
         value={editName}
         onChangeText={setEditName}
         placeholder="Nazwa użytkownika"
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
-        style={styles.input}
+        style={[theme.input, theme.width90]}
         value={editEmail}
         onChangeText={setEditEmail}
         placeholder="E-mail"
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
-        style={styles.input}
+        style={[theme.input, theme.width90]}
         value={editPassword}
         onChangeText={setEditPassword}
         placeholder="Hasło"
         secureTextEntry
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
-      <TouchableOpacity style={styles.saveButton} onPress={saveChanges}>
+      <TouchableOpacity style={[theme.button, theme.width90]} onPress={saveChanges}>
         <Text style={theme.buttonText}>Zapisz zmiany</Text>
       </TouchableOpacity>
     </View>

@@ -32,19 +32,19 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.Welcome}>Witaj w aplikacji Kontrola wydatków</Text>
+    <View style={theme.fullyCenteredContainerStyle}>
+      <Text style={[styles.Welcome, theme.width90]}>Witaj w aplikacji Kontrola wydatków</Text>
       <Text style={theme.titleStyle}>{isRegister ? "Rejestracja" : "Logowanie"}</Text>
 
       <TextInput
-        style={styles.input}
+        style={[theme.input, theme.width90]}
         placeholder="Email"
         onChangeText={setEmail}
         value={email}
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
-        style={styles.input}
+        style={[theme.input, theme.width90]}
         placeholder="Hasło"
         secureTextEntry
         onChangeText={setPassword}
@@ -52,14 +52,14 @@ export default function LoginScreen({ navigation }) {
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={[theme.button, theme.width90]} onPress={handleSubmit}>
         <Text style={theme.buttonText}>
           {isRegister ? "Zarejestruj się" : "Zaloguj"}
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => setIsRegister(!isRegister)}>
-        <Text style={styles.link}>
+        <Text style={theme.basicTextStyle}>
           {isRegister
             ? "Masz konto? Zaloguj się"
             : "Nie masz konta? Zarejestruj się"}

@@ -7,7 +7,7 @@ export default function QuotesScreen() {
   const styles = createStyles(theme);
 
   return (
-    <View style={styles.container}>
+    <View style={theme.fullyCenteredContainerStyle}>
       <Text style={styles.quote}>
         &quot;Nie oszczędzaj tego, co zostaje po wszystkich wydatkach, lecz wydawaj,
         co zostaje po odłożeniu oszczędności.&quot;

@@ -1,12 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
-import { createStyles } from "../theme/HistoryStyles";
 import { useData } from "./DataContext";
 
 export default function HistoryScreen() {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
 
   const { dataSets } = useData();
   const list = dataSets.list || [];
@@ -28,52 +26,41 @@ export default function HistoryScreen() {
       if (sorting === "desc") return b.date.localeCompare(a.date);
       return a.date.localeCompare(b.date);
     });
-
+    React.useEffect(() => {
+      setTypeFilter("Wszystko"); 
+    }, []);
   return (
     <ScrollView
-      style={styles.container}
-      contentContainerStyle={{
-        paddingBottom: 30,
-        alignItems: "center",
-      }}
+      style={theme.containerStyle}
+      contentContainerStyle={theme.centered}
     >
       <Text style={theme.titleStyle}>Historia operacji</Text>
-
-      <View style={styles.filterRow}>
+      <View style={theme.centeredRow}>
         {["Wszystko", "Wydatki", "Dochody"].map((t) => (
           <TouchableOpacity
             key={t}
-            style={[styles.filterButton, typeFilter === t && styles.activeFilter]}
+            style={[theme.button, typeFilter === t && theme.pressedButton]}
             onPress={() => setTypeFilter(t)}
           >
-            <Text
-              style={[
-                theme.basicTextStyle,
-                typeFilter === t && { color: theme.colors.background }
-              ]}
-            >
-              {t}
-            </Text>
+            <Text style={theme.buttonText}>{t}</Text>
           </TouchableOpacity>
         ))}
       </View>
-
-        <View style={styles.dateRow}>
-          <View style={styles.dateInputWrapper}>
+        <View style={[theme.centeredRow, theme.width90]}>
+          <View style={[theme.centeredRow, theme.width45]}>
             <Text style={theme.basicTextStyle}>Od:</Text>
             <TextInput
-              style={styles.dateInput}
+              style={theme.input}
               placeholder="YYYY-MM-DD"
               value={dateFrom}
               onChangeText={setDateFrom}
               placeholderTextColor={theme.darkMode ? "#777" : "#aaa"}
             />
           </View>
-
-          <View style={styles.dateInputWrapper}>
+          <View style={[theme.centeredRow, theme.width45]}>
             <Text style={theme.basicTextStyle}>Do:</Text>
             <TextInput
-              style={styles.dateInput}
+              style={theme.input}
               placeholder="YYYY-MM-DD"
               value={dateTo}
               onChangeText={setDateTo}
@@ -81,44 +68,25 @@ export default function HistoryScreen() {
             />
           </View>
         </View>
-
-
-      <View style={styles.filterRow}>
+      <View style={theme.centeredRow}>
         <TouchableOpacity
-          style={[styles.filterButton, sorting === "desc" && styles.activeFilter]}
+          style={[theme.button, sorting === "desc" && theme.pressedButton]}
           onPress={() => setSorting("desc")}
         >
-          <Text
-            style={[
-              theme.basicTextStyle,
-              sorting === "desc" && { color: theme.colors.background }
-            ]}
-          >
-            Najnowsze
-          </Text>
+          <Text style={theme.buttonText}>Najnowsze</Text>
         </TouchableOpacity>
-
         <TouchableOpacity
-          style={[styles.filterButton, sorting === "asc" && styles.activeFilter]}
+          style={[theme.button, sorting !== "desc" && theme.pressedButton]}
           onPress={() => setSorting("asc")}
         >
-          <Text
-            style={[
-              theme.basicTextStyle,
-              sorting === "asc" && { color: theme.colors.background }
-            ]}
-          >
-            Najstarsze
-          </Text>
+          <Text style={theme.buttonText}>Najstarsze</Text>
         </TouchableOpacity>
       </View>
-
       {filtered.length === 0 && (
         <Text style={theme.basicTextStyle}>Brak wyników</Text>
       )}
-
       {filtered.map((item, index) => (
-        <View key={item.id ?? index} style={styles.entryRow}>
+        <View key={item.id ?? index} style={[theme.entryRow, theme.width90]}>
           <View style={{ flex: 1 }}>
             <Text style={theme.basicTextStyle}>{item.name}</Text>
             <Text style={[theme.basicTextStyle, { fontSize: 12, opacity: 0.7 }]}>

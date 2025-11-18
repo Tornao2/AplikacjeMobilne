@@ -52,16 +52,17 @@ export default function GoalsScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Twoje cele</Text>
+    <View style={theme.centeredContainerStyle}>
+      <Text style={theme.titleStyle}>Twoje cele</Text>
 
       {showAddForm && (
-        <View style={[theme.input, theme.colors.background]}>
+        <View style={[theme.colors.background, theme.borders, theme.width90]}>
           <TextInput
             placeholder="Nazwa celu"
             style={theme.input}
             value={newGoal}
             onChangeText={setNewGoal}
+            placeholderTextColor={theme.darkMode ? "#777" : "#aaa"}
           />
           <TextInput
             placeholder="Kwota docelowa"
@@ -69,8 +70,9 @@ export default function GoalsScreen() {
             keyboardType="numeric"
             value={target}
             onChangeText={setTarget}
+            placeholderTextColor={theme.darkMode ? "#777" : "#aaa"}
           />
-          <View style={styles.formButtons}>
+          <View style={theme.spacedOutRow}>
             <TouchableOpacity style={theme.button} onPress={addGoal}>
               <Text style={theme.buttonText}>Zapisz cel</Text>
             </TouchableOpacity>
@@ -85,12 +87,12 @@ export default function GoalsScreen() {
       )}
 
       {!showAddForm && (
-        <TouchableOpacity style={theme.button} onPress={() => setShowAddForm(true)}>
+        <TouchableOpacity style={[theme.button, theme.width90]} onPress={() => setShowAddForm(true)}>
           <Text style={theme.buttonText}>Dodaj cel</Text>
         </TouchableOpacity>
       )}
 
-      <ScrollView>
+      <ScrollView style = {theme.width90}>
         {goals.map((goal, index) => {
           const progress = (goal.saved / goal.target) * 100;
           return (
