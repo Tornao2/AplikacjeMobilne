@@ -33,11 +33,11 @@ export default function EditScreen() {
   return (
     <View style={theme.centeredContainerStyle}>
       <Text style={theme.titleStyle}>Edycja</Text>
-      <View style={theme.spacedOutRow}>
+      <View style={[theme.spacedOutRow, theme.width90]}>
         {["wydatki", "dochody"].map((t) => (
           <TouchableOpacity
             key={t}
-            style={[theme.button, type === t && theme.pressedButton]}
+            style={[theme.button, type === t && theme.pressedButton, {flex:1}]}
             onPress={() => setType(t)}
           >
             <Text style={[theme.buttonText]}>

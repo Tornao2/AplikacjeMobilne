@@ -2,10 +2,6 @@ import { StyleSheet } from "react-native";
 
 export const createStyles = (theme) =>
   StyleSheet.create({
-    saveButton: {
-      ...theme.button,
-      flex: 1,
-    },
     goalCard: {
       borderRadius: theme.input.borderRadius,
       padding: 10,

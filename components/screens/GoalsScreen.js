@@ -77,7 +77,7 @@ export default function GoalsScreen() {
               <Text style={theme.buttonText}>Zapisz cel</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.saveButton, { backgroundColor: "red" }]}
+              style={[theme.button, {flex: 1 ,backgroundColor: "red" }]}
               onPress={() => setShowAddForm(false)}
             >
               <Text style={theme.buttonText}>Anuluj</Text>
@@ -110,21 +110,21 @@ export default function GoalsScreen() {
 
               <View style={styles.actionsRow}>
                 <TouchableOpacity
-                  style={[styles.saveButton, { backgroundColor: "lime" }]}
+                  style={[theme.button, {flex: 1 ,backgroundColor: "lime" }]}
                   onPress={() => updateProgress(index, 100)}
                 >
                   <Text style={theme.buttonText}>+100 zł</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.saveButton, { backgroundColor: "orange" }]}
+                  style={[theme.button, {flex: 1 ,backgroundColor: "orange" }]}
                   onPress={() => updateProgress(index, -100)}
                 >
                   <Text style={theme.buttonText}>-100 zł</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                  style={[styles.saveButton, { backgroundColor: "red" }]}
+                  style={[theme.button, {flex: 1 ,backgroundColor: "red" }]}
                   onPress={() => deleteGoal(index)}
                 >
                   <Text style={theme.buttonText}>Usuń cel</Text>

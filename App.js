@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import { MaterialIcons } from '@expo/vector-icons';
 import { DataProvider } from "./components/screens/DataContext";
 
 import { ThemeProvider, useTheme } from "./components/theme/ThemeContext";
@@ -28,16 +28,16 @@ function MainTabs() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: { backgroundColor: theme.colors.background },
-        tabBarActiveTintColor: theme.colors.primary,
+        tabBarActiveTintColor: "green",
         tabBarInactiveTintColor: theme.colors.text,
       }}
     >
-      <Tab.Screen name="Główna" component={MainScreen} />
-      <Tab.Screen name="Cytaty" component={QuotesScreen} />
-      <Tab.Screen name="Galeria" component={GalleryScreen} />
-      <Tab.Screen name="Historia" component={HistoryScreen} />
-      <Tab.Screen name="Cele" component={GoalsScreen} />
-      <Tab.Screen name="Ustawienia" component={SettingsScreen} />
+      <Tab.Screen name="Główna" component={MainScreen}  options={{tabBarIcon: ({ size }) => (<MaterialIcons name="home"size={size}/>)}}/>
+      <Tab.Screen name="Cytaty" component={QuotesScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="format-quote"size={size}/>)}}/>
+      <Tab.Screen name="Galeria" component={GalleryScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="photo-library"size={size}/>)}}/>
+      <Tab.Screen name="Historia" component={HistoryScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="history"size={size}/>)}}/>
+      <Tab.Screen name="Cele" component={GoalsScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="flag"size={size}/>)}}/>
+      <Tab.Screen name="Ustawienia" component={SettingsScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="settings"size={size}/>)}}/>
     </Tab.Navigator>
   );
 }

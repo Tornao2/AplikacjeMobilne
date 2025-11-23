@@ -32,7 +32,7 @@ export default function SettingsScreen() {
       <Text style={theme.titleStyle}>Ustawienia</Text>
       <Image source={user.avatar} style={styles.avatar} />
       <View style={[theme.spacedOutRow, theme.width90]}>
-        <Text style={theme.basicTextStyle}>Motyw</Text>
+        <Text style={[theme.basicTextStyle, {fontSize: 20}]}>Motyw</Text>
         <Switch
           value={theme.darkMode}
           onValueChange={(value) => setDarkMode(value)}

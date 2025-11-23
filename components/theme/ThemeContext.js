@@ -119,16 +119,13 @@ export const ThemeProvider = ({ children }) => {
         justifyContent: "space-between",        
         flexDirection: "row",
       },
-      pieChart: {
-        paddingLeft: 100
-      },
       centered: {
         alignItems: "center",
       },
       footer: { 
         marginTop: "auto", 
         alignItems: "center", 
-        paddingVertical: 15 
+        paddingVertical: 12 
       },
       entryRow: {
         flexDirection: "row",

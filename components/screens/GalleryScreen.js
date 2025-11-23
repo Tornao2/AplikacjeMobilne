@@ -42,7 +42,7 @@ export default function GalleryScreen() {
         {Object.keys(categories).map((cat) => (
           <TouchableOpacity
             key={cat}
-            style={[theme.button, selectedCategory === cat && theme.pressedButton]}
+            style={[theme.button, selectedCategory === cat && theme.pressedButton, {flex:1}]}
             onPress={() => setSelectedCategory(cat)}
           >
             <Text style={[theme.buttonText]}>
@@ -54,16 +54,16 @@ export default function GalleryScreen() {
 
       <ScrollView contentContainerStyle={theme.centeredRow}>
         {images[selectedCategory].map((img, idx) => (
-          <TouchableOpacity key={idx} onPress={() => setSelectedImage(img)}>
+          <TouchableOpacity activeOpacity={1} key={idx} onPress={() => setSelectedImage(img)}>
             <Image source={img} style={styles.thumbnail} />
           </TouchableOpacity>
         ))}
       </ScrollView>
       <View style={theme.centeredRow}>
-        <TouchableOpacity style={theme.button} onPress={() => Alert.alert("Aparat", "Zrób zdjęcie i zapisz")}>
+        <TouchableOpacity style={[theme.button, {flex:1}]} onPress={() => Alert.alert("Aparat", "Zrób zdjęcie i zapisz")}>
           <Text style={theme.buttonText}>Zrób zdjęcie</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[theme.button, editMode && theme.pressedButton]} onPress={() => setEditMode(!editMode)}>
+        <TouchableOpacity style={[theme.button, editMode && theme.pressedButton, , {flex:1}]} onPress={() => setEditMode(!editMode)}>
           <Text style={[theme.buttonText]}>{editMode ? "Gotowe" : "Edytuj"}</Text>
         </TouchableOpacity>
       </View>
@@ -72,9 +72,14 @@ export default function GalleryScreen() {
           <TouchableOpacity style={StyleSheet.absoluteFillObject} onPress={() => setSelectedImage(null)} />
           <Image source={selectedImage} style={styles.fullImage} resizeMode="contain" />
           {editMode && (
-            <TouchableOpacity style={[theme.button, theme.footer, {backgroundColor: "red"}]} onPress={() => handleDelete(selectedImage)}>
-              <Text style={theme.buttonText}>Usuń</Text>
-            </TouchableOpacity>
+            <View style={[theme.spacedOutRow, theme.footer, theme.width90]}>
+              <TouchableOpacity style={[theme.button, {backgroundColor: "red", flex:1}]} onPress={() => handleDelete(selectedImage)}>
+                <Text style={theme.buttonText}>Usuń</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[theme.button, {flex:1}]} onPress={() => setSelectedImage(null)}>
+                <Text style={theme.buttonText}>Powrót</Text>
+              </TouchableOpacity>
+            </View>
           )}
         </View>
       </Modal>
