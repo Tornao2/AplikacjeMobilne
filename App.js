@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -19,32 +19,79 @@ import EditScreen from "./components/screens/EditScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const GlowIcon = ({ name, size, focused, theme }) => {
+  let iconColor;
+  if (focused) {
+    iconColor = "green"; 
+  } else {
+    iconColor = theme.darkMode ? "#E0E0E0" : "#555555";
+  }
+  return (
+    <View>
+      <MaterialIcons 
+        name={name} 
+        size={size} 
+        color={iconColor} 
+      />
+    </View>
+  );
+};
 
 function MainTabs() {
   const { theme } = useTheme();
-
+  const renderTabIcon = (name, props) => (
+    <GlowIcon 
+      name={name} 
+      size={props.size} 
+      focused={props.focused} 
+      theme={theme} 
+    />
+  );
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false,
-        tabBarStyle: { backgroundColor: theme.colors.background },
         tabBarActiveTintColor: "green",
         tabBarInactiveTintColor: theme.colors.text,
+        headerShown: false,
+        tabBarStyle: { backgroundColor: theme.colors.background},
       }}
     >
-      <Tab.Screen name="Główna" component={MainScreen}  options={{tabBarIcon: ({ size }) => (<MaterialIcons name="home"size={size}/>)}}/>
-      <Tab.Screen name="Cytaty" component={QuotesScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="format-quote"size={size}/>)}}/>
-      <Tab.Screen name="Galeria" component={GalleryScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="photo-library"size={size}/>)}}/>
-      <Tab.Screen name="Historia" component={HistoryScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="history"size={size}/>)}}/>
-      <Tab.Screen name="Cele" component={GoalsScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="flag"size={size}/>)}}/>
-      <Tab.Screen name="Ustawienia" component={SettingsScreen} options={{tabBarIcon: ({ size }) => (<MaterialIcons name="settings"size={size}/>)}}/>
+      <Tab.Screen 
+        name="Główna" 
+        component={MainScreen}  
+        options={{ tabBarIcon: (props) => renderTabIcon("home", props) }}
+      />
+      <Tab.Screen 
+        name="Cytaty" 
+        component={QuotesScreen} 
+        options={{ tabBarIcon: (props) => renderTabIcon("format-quote", props) }}
+      />
+      <Tab.Screen 
+        name="Galeria" 
+        component={GalleryScreen} 
+        options={{ tabBarIcon: (props) => renderTabIcon("photo-library", props) }}
+      />
+      <Tab.Screen 
+        name="Historia" 
+        component={HistoryScreen} 
+        options={{ tabBarIcon: (props) => renderTabIcon("history", props) }}
+      />
+      <Tab.Screen 
+        name="Cele" 
+        component={GoalsScreen} 
+        options={{ tabBarIcon: (props) => renderTabIcon("flag", props) }}
+      />
+      <Tab.Screen 
+        name="Ustawienia" 
+        component={SettingsScreen} 
+        options={{ tabBarIcon: (props) => renderTabIcon("settings", props) }}
+      />
     </Tab.Navigator>
   );
 }
 
 function AppContent() {
   const { theme } = useTheme();
-
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}

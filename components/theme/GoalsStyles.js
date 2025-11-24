@@ -5,7 +5,7 @@ export const createStyles = (theme) =>
     goalCard: {
       borderRadius: theme.input.borderRadius,
       padding: 10,
-      marginBottom: 15,
+      marginBottom: 10,
       borderWidth: 1,
       borderColor: theme.input.borderColor,
     },
@@ -17,10 +17,5 @@ export const createStyles = (theme) =>
     progressFill: {
       height: "100%",
       backgroundColor: "lime",
-    },
-    actionsRow: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginTop: 10,
     },
   });

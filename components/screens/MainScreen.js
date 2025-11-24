@@ -11,14 +11,11 @@ export default function MainScreen() {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const styles = createStyles(theme);
-
   const [period, setPeriod] = useState("miesiąc");
   const [type, setType] = useState("Dochody");
   const {dataSets} = useData();
-
   const screenWidth = Dimensions.get("window").width;
   const now = new Date();
-
   function filterByPeriod(list) {
     return (list || []).filter(item => {
       const d = new Date(item.date);
@@ -65,7 +62,7 @@ export default function MainScreen() {
         {["dzień", "miesiąc", "rok"].map((p) => (
           <TouchableOpacity
             key={p}
-            style={[theme.button, period === p && theme.pressedButton, {flex:1}]}
+            style={[theme.button, period === p && theme.pressedButton, {flex:1, marginBottom: 0}]}
             onPress={() => setPeriod(p)}
           >
             <Text style={[theme.buttonText, period === p && styles.activePeriodText]}>
@@ -92,7 +89,7 @@ export default function MainScreen() {
           hasLegend={false}
           center={[screenWidth/4, 0]}
       />
-      <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginTop: 4 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", justifyContent: "center", marginBottom: 4 }}>
         {filteredData.map((item, idx) => (
           <View key={idx} style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 4 }}>
             <View style={{ width: 12, height: 12, backgroundColor: item.color, marginRight: 4 }} />
@@ -127,7 +124,7 @@ export default function MainScreen() {
         })}
       </ScrollView>
       <TouchableOpacity
-          style={[theme.button, theme.footer, theme.width90]}
+          style={[theme.button, theme.footer, theme.width90, {paddingVertical: 8}]}
           onPress={() => navigation.navigate("Edit")}
         >
           <Text style={[theme.buttonText]}>Dodaj</Text>

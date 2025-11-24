@@ -5,6 +5,6 @@ export const createStyles = (theme) =>
     Welcome: {
       ...theme.titleStyle,
       fontSize: 32,
-      color: "#b0c222ff",
+      color: "#c1a505ff"
     },
   });

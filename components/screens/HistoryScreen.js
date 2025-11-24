@@ -116,12 +116,7 @@ export default function HistoryScreen() {
               {item.date}
             </Text>
           </View>
-          <Text
-            style={{
-              color: item.type === "dochody" ? "lime" : "red",
-              fontWeight: "700",
-            }}
-          >
+          <Text style={{color: item.type === "Dochody" ? "green" : "red", fontWeight: "700",}}>
             {item.amount} zł
           </Text>
         </View>
