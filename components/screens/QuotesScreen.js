@@ -40,7 +40,7 @@ export default function QuotesScreen() {
         ) : (
           <View style = {theme.fullyCenteredContainerStyle}>
             <Text style={[theme.basicTextStyle, {fontSize: 300}]}>?</Text>
-            <Text style={[theme.basicTextStyle]}>Potrząśnij telefonem, by zobaczyć cytat!</Text>
+            <Text style={[theme.basicTextStyle]}>Potrząśnij telefonem, by zobaczyć cytat dnia!</Text>
           </View>
         )}
     </View>

@@ -1,0 +1,9 @@
+{
+  "accounts": [
+    {
+      "id": "1",
+      "email": "admin@admin.com",
+      "haslo": "admin"
+    }
+  ]
+}

@@ -10,17 +10,17 @@ export const ThemeProvider = ({ children }) => {
     text: darkMode ? "#fff" : "#000",
     reverseText: darkMode ? "#000" : "#fff",
     border: darkMode ? "#555" : "#d3d3d3",
-    primary: darkMode ? "#444" : "#000", 
-    selectedColor: "#0f4917ff", 
-    buttonText: "#fff", 
+    primary: darkMode ? "#444" : "#000",
+    selectedColor: "#0f4917ff",
+    buttonText: "#fff",
   };
-  const { 
-    background, lighterBackground, text, border, primary, selectedColor, buttonText 
+  const {
+    background, lighterBackground, text, border, primary, selectedColor, buttonText
   } = colors;
   const containerBase = {
-      flex: 1,
-      padding: 5,
-      backgroundColor: background,
+    flex: 1,
+    padding: 5,
+    backgroundColor: background,
   };
   const sharedButtonProps = {
     fontWeight: "700",
@@ -32,12 +32,12 @@ export const ThemeProvider = ({ children }) => {
   };
   const theme = {
     darkMode,
-    colors, 
+    colors,
     input: {
       backgroundColor: lighterBackground,
       borderColor: border,
       color: text,
-      placeholderTextColor: "#A9A9A9", 
+      placeholderTextColor: "#A9A9A9",
       borderRadius: 8,
       padding: 8,
       borderWidth: 1,
@@ -46,11 +46,11 @@ export const ThemeProvider = ({ children }) => {
     },
     button: {
       backgroundColor: primary,
-      ...sharedButtonProps, 
+      ...sharedButtonProps,
     },
     pressedButton: {
-      backgroundColor: selectedColor, 
-      ...sharedButtonProps, 
+      backgroundColor: selectedColor,
+      ...sharedButtonProps,
     },
     borders: {
       borderColor: border,
@@ -89,6 +89,11 @@ export const ThemeProvider = ({ children }) => {
       fontWeight: "600",
       color: text,
     },
+    smallTextStyle: {
+      fontSize: 14,
+      fontWeight: "400",
+      color: text,
+    },
     biggerTextStyle: {
       fontSize: 18,
       fontWeight: "600",
@@ -124,7 +129,22 @@ export const ThemeProvider = ({ children }) => {
       borderBottomWidth: 1,
       borderBottomColor: border,
       paddingVertical: 8,
-    }
+    },
+    categoryListItem: {
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: border,
+    },
+    columnItemContainer: {
+      flexDirection: 'column',
+      flex: 1,
+    },
+    categoryListContainer: {
+        maxHeight: 200, 
+        borderWidth: 1,
+        borderRadius: 8,
+        overflow: 'hidden', 
+    },
   };
 
   return (
