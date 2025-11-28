@@ -5,5 +5,97 @@
       "email": "admin@admin.com",
       "haslo": "admin"
     }
+  ],
+  "quotes": [
+    {
+      "id": 1,
+      "text": "Nie oszczędzaj tego, co zostaje po wszystkich wydatkach, lecz wydawaj, co zostaje po odłożeniu oszczędności.",
+      "author": "Warren E. Buffett"
+    },
+    {
+      "id": 2,
+      "text": "Bogactwo to umiejętność pełnego doświadczania życia.",
+      "author": "Henry David Thoreau"
+    },
+    {
+      "id": 3,
+      "text": "Pieniądze są dobrym sługą, ale złym panem.",
+      "author": "Francis Bacon"
+    },
+    {
+      "id": 4,
+      "text": "Najlepszy czas na zasadzenie drzewa był 20 lat temu. Drugi najlepszy czas jest teraz.",
+      "author": "Chińskie przysłowie"
+    },
+    {
+      "id": 5,
+      "text": "Nigdy nie licz na jeden dochód. Zainwestuj, by stworzyć drugi.",
+      "author": "Warren E. Buffett"
+    },
+    {
+      "id": 6,
+      "text": "Każdy może stać się bogaty, jeśli będzie konsekwentnie odkładał i inwestował.",
+      "author": "Benjamin Franklin"
+    },
+    {
+      "id": 7,
+      "text": "Lepiej jest mieć mało potrzeb niż dużo majątku.",
+      "author": "Epiktet"
+    },
+    {
+      "id": 8,
+      "text": "Twoje nawyki finansowe mówią o Tobie więcej niż Twój dochód.",
+      "author": "Anonim"
+    },
+    {
+      "id": 9,
+      "text": "Bogaty nie jest ten, kto ma dużo, lecz ten, kto potrzebuje mało.",
+      "author": "Seneka"
+    },
+    {
+      "id": 10,
+      "text": "Nie przejmuj się tym, ile zarabiasz. Martw się tym, ile zatrzymujesz.",
+      "author": "Robert Kiyosaki"
+    },
+    {
+      "id": 11,
+      "text": "Finansowa wolność zaczyna się od finansowej dyscypliny.",
+      "author": "Grant Cardone"
+    },
+    {
+      "id": 12,
+      "text": "Inwestowanie jest jak sadzenie: im wcześniej zaczniesz, tym więcej zbierzesz.",
+      "author": "Anonim"
+    },
+    {
+      "id": 13,
+      "text": "Wydawanie pieniędzy, których nie masz, na rzeczy, których nie potrzebujesz, by zaimponować ludziom, których nie lubisz, jest drogą do biedy.",
+      "author": "Will Rogers"
+    },
+    {
+      "id": 14,
+      "text": "Ludzie pracują na pieniądze. Bogaci sprawiają, że pieniądze pracują na nich.",
+      "author": "Robert Kiyosaki"
+    },
+    {
+      "id": 15,
+      "text": "Oszczędzanie to fundament, inwestowanie to droga, a cierpliwość to paliwo finansowego sukcesu.",
+      "author": "Anonim"
+    },
+    {
+      "id": 16,
+      "text": "Jeśli nie kontrolujesz swoich pieniędzy, one będą kontrolować Ciebie.",
+      "author": "Dave Ramsey"
+    },
+    {
+      "id": 17,
+      "text": "Nie musisz być geniuszem, by inwestować. Musisz być cierpliwy.",
+      "author": "Charlie Munger"
+    },
+    {
+      "id": 18,
+      "text": "Czas jest ważniejszy niż pieniądze, bo pieniądze możesz odzyskać – czasu nie.",
+      "author": "Jim Rohn"
+    }
   ]
 }

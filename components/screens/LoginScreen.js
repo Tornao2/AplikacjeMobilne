@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/LoginStyles";
 
-export const API_BASE_URL = 'http://10.247.9.229:3000'; 
+export const API_BASE_URL = 'http://192.168.0.122:3000'; 
 export const ACCOUNTS_ENDPOINT = `${API_BASE_URL}/accounts`;
 
 export default function LoginScreen({ navigation }) {

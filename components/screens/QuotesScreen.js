@@ -4,14 +4,32 @@ import { Accelerometer } from 'expo-sensors';
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/QuotesStyles";
 
+export const API_BASE_URL = 'http://192.168.0.122:3000'; 
+export const QUOTES_ENDPOINT = `${API_BASE_URL}/quotes`;
+
 const SHAKE_THRESHOLD = 1.5; 
 const DEBOUNCE_TIME = 1000; 
 
 export default function QuotesScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const [quote, setQuote] = useState(null);
   const [visible, setVisible] = useState(false);
   const [lastShake, setLastShake] = useState(0); 
+
+  const fetchRandomQuote = async () => {
+    try {
+      const response = await fetch(QUOTES_ENDPOINT);
+      const data = await response.json();
+
+      if (data.length > 0) {
+        const randomIndex = Math.floor(Math.random() * data.length);
+        setQuote(data[randomIndex]);
+      }
+    } catch (error) {
+      console.error("Błąd pobierania cytatu:", error);
+    }
+  };
 
   useEffect(() => {
     Accelerometer.setUpdateInterval(100); 
@@ -19,9 +37,10 @@ export default function QuotesScreen() {
       const { x, y, z } = accelerometerData;
       const magnitude = Math.sqrt(x * x + y * y + z * z) - 1; 
       const now = Date.now();
-      if (!visible && magnitude > SHAKE_THRESHOLD && now - lastShake > DEBOUNCE_TIME) {
+      if (magnitude > SHAKE_THRESHOLD && now - lastShake > DEBOUNCE_TIME) {
         setLastShake(now);
         setVisible(true); 
+        fetchRandomQuote();
       }
     });
     return () => subscription.remove();
@@ -29,13 +48,14 @@ export default function QuotesScreen() {
 
   return (
     <View style={theme.fullyCenteredContainerStyle}> 
-        {visible ? (
+        {visible && quote ? (
             <View style={theme.fullyCenteredContainerStyle}>
                 <Text style={styles.quote}>
-                    &quot;Nie oszczędzaj tego, co zostaje po wszystkich wydatkach, lecz wydawaj,
-                    co zostaje po odłożeniu oszczędności.&quot;
+                    "{quote.text}"
                 </Text>
-                <Text style={theme.basicTextStyle}>Warren E. Buffett</Text>
+                <Text style={theme.basicTextStyle}>
+                  "{quote.author}"
+                </Text>
             </View>
         ) : (
           <View style = {theme.fullyCenteredContainerStyle}>
