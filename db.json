@@ -97,5 +97,31 @@
       "text": "Czas jest ważniejszy niż pieniądze, bo pieniądze możesz odzyskać – czasu nie.",
       "author": "Jim Rohn"
     }
+  ],
+  "goals": [
+    {
+      "id": 1,
+      "name": "Samochód",
+      "saved": 5000,
+      "target": 10000
+    },
+    {
+      "id": 2,
+      "name": "Wakacje",
+      "saved": 1000,
+      "target": 5000
+    },
+    {
+      "id": 3,
+      "name": "Mieszkanie",
+      "saved": 0,
+      "target": 350000
+    },
+    {
+      "id": "92ea",
+      "name": "Test",
+      "saved": 35,
+      "target": 500
+    }
   ]
 }

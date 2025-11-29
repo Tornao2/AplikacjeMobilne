@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GoalsStyles";
+
+export const API_BASE_URL = "http://192.168.0.122:3000";
+export const GOALS_ENDPOINT = `${API_BASE_URL}/goals`;
 
 const GoalItem = ({ goal, index, updateProgress, deleteGoal, theme, styles }) => {
   const [changeAmount, setChangeAmount] = useState("");
   const handleTransaction = (multiplier) => {
     const value = parseFloat(changeAmount);
     if (!isNaN(value) && value > 0 ) {
-      updateProgress(index, value * multiplier);
+      updateProgress(goal, value * multiplier)
       setChangeAmount(""); 
     }
   };
@@ -47,7 +50,7 @@ const GoalItem = ({ goal, index, updateProgress, deleteGoal, theme, styles }) =>
         </TouchableOpacity>
         <TouchableOpacity
           style={[theme.button, {width: 50, backgroundColor: "red"}]}
-          onPress={() => deleteGoal(index)}
+          onPress={() => deleteGoal(goal.id, goal.name)}
         >
           <Text style={theme.buttonText}>X</Text>
         </TouchableOpacity>
@@ -59,47 +62,92 @@ const GoalItem = ({ goal, index, updateProgress, deleteGoal, theme, styles }) =>
 export default function GoalsScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const [goals, setGoals] = useState([
-    { name: "Samochód", saved: 5000, target: 10000 },
-    { name: "Wakacje", saved: 1000, target: 5000 },
-    { name: "Mieszkanie", saved: 0, target: 350000 },
-  ]);
+  const [goals, setGoals] = useState([]);
+
+  useEffect(() => {
+    fetchGoals();
+  }, []);
+
+  const fetchGoals = async () => {
+    try {
+      const response = await fetch(GOALS_ENDPOINT);
+      const data = await response.json();
+      setGoals(data);
+    } catch (error) {
+      console.error("Błąd pobierania celów:", error);
+    }
+  };
   const [showAddForm, setShowAddForm] = useState(false);
   const [newGoal, setNewGoal] = useState("");
   const [target, setTarget] = useState("");
-  const addGoal = () => {
-    if (!newGoal || !target) return alert("Podaj nazwę i kwotę celu.");
-    setGoals([...goals, { name: newGoal, saved: 0, target: parseFloat(target) }]);
-    setNewGoal("");
-    setTarget("");
-    setShowAddForm(false);
+  const addGoal = async () => {
+    if (!newGoal || !target) {
+      Alert.alert("Błąd", "Podaj nazwę i kwotę celu.");
+      return;
+    }
+
+    try {
+      const response = await fetch(GOALS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newGoal,
+          saved: 0,
+          target: parseFloat(target)
+        })
+      });
+
+      if (response.ok) {
+        fetchGoals(); // odśwież listę z serwera
+        setNewGoal("");
+        setTarget("");
+        setShowAddForm(false);
+      }
+    } catch (error) {
+      console.error("Błąd dodawania celu:", error);
+    }
   };
-  const deleteGoal = (index) => {
+  const deleteGoal = (id, name) => {
     Alert.alert(
-      "Usuń cel", `Czy na pewno chcesz usunąć cel "${goals[index].name}"?`,
+      "Usuń cel",
+      `Czy na pewno chcesz usunąć cel "${name}"?`,
       [
         { text: "Anuluj", style: "cancel" },
         {
           text: "Usuń",
           style: "destructive",
-          onPress: () => {
-            const updated = [...goals];
-            updated.splice(index, 1);
-            setGoals(updated);
-          },
-        },
+          onPress: async () => {
+            try {
+              await fetch(`${GOALS_ENDPOINT}/${id}`, {
+                method: "DELETE"
+              });
+              fetchGoals();
+            } catch (error) {
+              console.error("Błąd usuwania celu:", error);
+            }
+          }
+        }
       ]
     );
   };
 
-  const updateProgress = (index, amount) => {
-    const updated = [...goals];
-    const newAmount = updated[index].saved + amount;
-    if (newAmount > updated[index].target)
-      return;
-    updated[index].saved = Math.max(0, newAmount); 
-    setGoals(updated);
-  };
+  const updateProgress = async (goal, amount) => {
+  const newSaved = goal.saved + amount;
+
+  if (newSaved < 0 || newSaved > goal.target) return;
+
+  try {
+    await fetch(`${GOALS_ENDPOINT}/${goal.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ saved: newSaved })
+    });
+
+    fetchGoals(); // odśwież dane z serwera
+  } catch (error) {
+    console.error("Błąd aktualizacji celu:", error);
+  }
+};
 
   return (
     <View style={[theme.centeredContainerStyle]}>
