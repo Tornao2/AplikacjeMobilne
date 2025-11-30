@@ -4,8 +4,8 @@ import { Accelerometer } from 'expo-sensors';
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/QuotesStyles";
 
-export const API_BASE_URL = 'http://192.168.0.122:3000'; 
-export const QUOTES_ENDPOINT = `${API_BASE_URL}/quotes`;
+import { API } from "../api";
+export const QUOTES_ENDPOINT = API.QUOTES;
 
 const SHAKE_THRESHOLD = 1.5; 
 const DEBOUNCE_TIME = 1000; 

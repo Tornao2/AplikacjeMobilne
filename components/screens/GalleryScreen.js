@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   View, 
   Text, 
@@ -12,84 +12,117 @@ import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GalleryStyles";
 
-let nextId = 100;
-const generateId = () => `CAM-${nextId++}`;
-const initialCategories = {
-  Faktury: [
-    { id: 'F1', uri: require("../../assets/faktura.jpg") },
-  ],
-  Paragony: [
-    { id: 'P1', uri: require("../../assets/paragon.jpg") },
-  ],
-  Wpłaty: [
-    { id: 'W1', uri: require("../../assets/wpłata.jpg") },
-  ],
-};
+//let nextId = 100;
+//const generateId = () => `CAM-${nextId++}`;
+// const initialCategories = {
+//   Faktury: [
+//     { id: 'F1', uri: require("../../assets/faktura.jpg") },
+//   ],
+//   Paragony: [
+//     { id: 'P1', uri: require("../../assets/paragon.jpg") },
+//   ],
+//   Wplaty: [
+//     { id: 'W1', uri: require("../../assets/wpłata.jpg") },
+//   ],
+// };
 
 export default function GalleryScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const [selectedCategory, setSelectedCategory] = useState("Faktury");
   const [selectedPhoto, setSelectedPhoto] = useState(null); 
-  const [images, setImages] = useState(initialCategories);
+  const [images, setImages] = useState({
+    Faktury: [],
+    Paragony: [],
+    Wplaty: []
+  });
   const [isTransferring, setIsTransferring] = useState(false); 
-  const handleDelete = (photoToDelete) => {
-    Alert.alert("Usuń zdjęcie", "Czy na pewno chcesz usunąć to zdjęcie?", [
-      { text: "Anuluj", style: "cancel" },
-      {
-        text: "Usuń",
-        style: "destructive",
-        onPress: () => {
-          setImages((prev) => ({
-            ...prev,
-            [selectedCategory]: prev[selectedCategory].filter((p) => p.id !== photoToDelete.id), 
-          }));
-          setSelectedPhoto(null);
-          setIsTransferring(false); 
-        },
-      },
-    ]);
-  };
-  const handleTransfer = (targetCategory) => {
-    if (!selectedPhoto || selectedCategory === targetCategory) return;
-    setImages((prev) => {
-      const sourceList = prev[selectedCategory].filter((p) => p.id !== selectedPhoto.id); 
-      const targetList = [...prev[targetCategory], selectedPhoto]; 
-      return {
-        ...prev,
-        [selectedCategory]: sourceList,
-        [targetCategory]: targetList,
-      };
+  const handleDelete = async () => {
+    if (!selectedPhoto) return;
+
+    await fetch(`http://192.168.0.122:3000/photos/${selectedPhoto.id}`, {
+      method: "DELETE"
     });
-    setSelectedCategory(targetCategory); 
-    setSelectedPhoto(null);
-    setIsTransferring(false);
+
+    fetchPhotos();
+  };
+  const handleTransfer = async () => {
+    if (!selectedPhoto) return;
+
+    await fetch(`http://192.168.0.122:3000/photos/${selectedPhoto.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category: targetCategory })
+    });
+
+    fetchPhotos();  
+  };
+  const fetchPhotos = async () => {
+    try {
+      const res = await fetch("http://192.168.0.122:3000/photos");
+      const data = await res.json();
+
+      const grouped = {
+        Faktury: [],
+        Paragony: [],
+        Wplaty: []
+      };
+
+      data.forEach(photo => {
+        if (grouped[photo.category]) {
+          grouped[photo.category].push({
+            id: photo.id,
+            uri: { uri: `data:image/jpeg;base64,${photo.base64}` }
+          });
+        }
+      });
+
+      setImages(grouped);
+      setSelectedPhoto(null);  // <── kluczowe
+    } catch (e) {
+      console.log("fetch error", e);
+      setImages({
+        Faktury: [],
+        Paragony: [],
+        Wplaty: []
+      });
+    }
   };
   const handleCapture = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
+
     if (status !== 'granted') {
-      Alert.alert(
-        "Brak uprawnień", 
-        "Potrzebujemy dostępu do aparatu, aby zrobić zdjęcie!"
-      );
+      Alert.alert("Brak uprawnień", "Potrzebujemy dostępu do aparatu");
       return;
     }
+
     let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: false, 
-      aspect: [4, 3],
-      quality: 0.5, 
+      allowsEditing: false,
+      quality: 0.5,
+      base64: true,
     });
+
     if (!result.canceled && result.assets && result.assets.length > 0) {
+      const photoBase64 = result.assets[0].base64;
+
       const newPhoto = {
-        id: generateId(),
-        uri: { uri: result.assets[0].uri }, 
+        //id: generateId(),
+        category: selectedCategory,
+        base64: photoBase64
       };
-      setImages(prev => ({
-        ...prev,
-        [selectedCategory]: [...prev[selectedCategory], newPhoto]
-      }));
+
+      await fetch("http://192.168.0.122:3000/photos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPhoto)
+      });
+
+      fetchPhotos();
     }
   };
+  useEffect(() => {
+    fetchPhotos();
+  }, []);
   const TransferOptions = () => (
     <View style = {theme.width90}>
       <Text style={[theme.biggerTextStyle, { marginBottom: 15, textAlign: "center" }]}>

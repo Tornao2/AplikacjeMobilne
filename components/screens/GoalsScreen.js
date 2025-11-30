@@ -3,8 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "reac
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GoalsStyles";
 
-export const API_BASE_URL = "http://192.168.0.122:3000";
-export const GOALS_ENDPOINT = `${API_BASE_URL}/goals`;
+import { API } from "../api";
+export const GOALS_ENDPOINT = API.GOALS;
 
 const GoalItem = ({ goal, index, updateProgress, deleteGoal, theme, styles }) => {
   const [changeAmount, setChangeAmount] = useState("");
@@ -98,7 +98,7 @@ export default function GoalsScreen() {
       });
 
       if (response.ok) {
-        fetchGoals(); // odśwież listę z serwera
+        fetchGoals();
         setNewGoal("");
         setTarget("");
         setShowAddForm(false);
@@ -143,7 +143,7 @@ export default function GoalsScreen() {
       body: JSON.stringify({ saved: newSaved })
     });
 
-    fetchGoals(); // odśwież dane z serwera
+    fetchGoals();
   } catch (error) {
     console.error("Błąd aktualizacji celu:", error);
   }

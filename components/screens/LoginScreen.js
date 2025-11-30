@@ -3,8 +3,8 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/LoginStyles";
 
-export const API_BASE_URL = 'http://192.168.0.122:3000'; 
-export const ACCOUNTS_ENDPOINT = `${API_BASE_URL}/accounts`;
+import { API } from "../api";
+export const ACCOUNTS_ENDPOINT = API.ACCOUNTS;
 
 export default function LoginScreen({ navigation }) {
   const { theme } = useTheme();
