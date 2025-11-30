@@ -4,4 +4,6 @@ export const API = {
   GOALS: `${LOCAL_IP}/goals`,
   QUOTES: `${LOCAL_IP}/quotes`,
   ACCOUNTS: `${LOCAL_IP}/accounts`,
+  PHOTOS: `${LOCAL_IP}/photos`,
+  LIST: `${LOCAL_IP}/list`,
 };

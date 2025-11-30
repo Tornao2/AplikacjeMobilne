@@ -12,6 +12,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GalleryStyles";
 
+import { API } from "../api";
+export const PHOTOS_ENDPOINT = API.PHOTOS;
+
 //let nextId = 100;
 //const generateId = () => `CAM-${nextId++}`;
 // const initialCategories = {
@@ -40,7 +43,7 @@ export default function GalleryScreen() {
   const handleDelete = async () => {
     if (!selectedPhoto) return;
 
-    await fetch(`http://192.168.0.122:3000/photos/${selectedPhoto.id}`, {
+    await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
       method: "DELETE"
     });
 
@@ -49,7 +52,7 @@ export default function GalleryScreen() {
   const handleTransfer = async () => {
     if (!selectedPhoto) return;
 
-    await fetch(`http://192.168.0.122:3000/photos/${selectedPhoto.id}`, {
+    await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ category: targetCategory })
@@ -59,7 +62,7 @@ export default function GalleryScreen() {
   };
   const fetchPhotos = async () => {
     try {
-      const res = await fetch("http://192.168.0.122:3000/photos");
+      const res = await fetch(PHOTOS_ENDPOINT);
       const data = await res.json();
 
       const grouped = {
@@ -78,7 +81,7 @@ export default function GalleryScreen() {
       });
 
       setImages(grouped);
-      setSelectedPhoto(null);  // <── kluczowe
+      setSelectedPhoto(null); 
     } catch (e) {
       console.log("fetch error", e);
       setImages({
@@ -111,7 +114,7 @@ export default function GalleryScreen() {
         base64: photoBase64
       };
 
-      await fetch("http://192.168.0.122:3000/photos", {
+      await fetch(PHOTOS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPhoto)

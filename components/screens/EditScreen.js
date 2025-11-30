@@ -11,6 +11,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../theme/ThemeContext";
 import { useData, EXPENSE_CATEGORIES, INCOME_CATEGORIES} from "./DataContext";
 
+import { API } from "../api";
+export const LIST_ENDPOINT = API.LIST;
+
 export default function EditScreen() {
   const { theme } = useTheme();
   const navigation = useNavigation();
@@ -35,33 +38,39 @@ export default function EditScreen() {
     setIsCategoryListVisible(false); 
   }
 
-  const addEntry = useCallback(() => {
+  const addEntry = useCallback(async () => {
     if (!name.trim() || !amount) {
-      Alert.alert("Błąd", "Uzupełnij nazwę i kwotę!");
+      Alert.alert("Błąd", "Uzupełnij nazwę i kwotę");
       return;
     }
+
     if (!category || !currentCategories.includes(category)) {
-        Alert.alert("Błąd", "Wybierz kategorię z listy!");
-        return;
+      Alert.alert("Błąd", "Wybierz kategorię z listy");
+      return;
     }
+
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      Alert.alert("Błąd", "Kwota musi być poprawną liczbą większą od zera!");
+      Alert.alert("Błąd", "Kwota musi być liczbą większą od zera");
       return;
     }
-    addToList({
-      id: Date.now(), 
+
+    const newEntry = {
       name: name.trim(),
       amount: parsedAmount,
       date: new Date().toISOString().split("T")[0],
       type,
-      category, 
-      color: generateRandomColor(),
-    });
+      category,
+      color: generateRandomColor()
+    };
+
+    await addToList(newEntry);
+
     setName("");
     setAmount("");
-    setCategory(""); 
-    setIsCategoryListVisible(false); 
+    setCategory("");
+    setIsCategoryListVisible(false);
+
     navigation.goBack();
   }, [name, amount, type, category, currentCategories, addToList, navigation]);
 

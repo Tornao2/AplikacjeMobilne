@@ -124,6 +124,143 @@
       "target": 500
     }
   ],
+  "list": [
+    {
+      "name": "Artykuły spożywcze",
+      "amount": 500,
+      "color": "red",
+      "date": "2025-11-15",
+      "type": "Wydatki",
+      "category": "Jedzenie",
+      "id": "d06b"
+    },
+    {
+      "name": "Transport",
+      "amount": 20,
+      "color": "green",
+      "date": "2025-10-15",
+      "type": "Wydatki",
+      "category": "Transport",
+      "id": "08f5"
+    },
+    {
+      "name": "Kredyty",
+      "amount": 1200,
+      "color": "orange",
+      "date": "2025-01-15",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "id": "1d50"
+    },
+    {
+      "name": "Wypłata",
+      "amount": 800,
+      "color": "purple",
+      "date": "2025-09-15",
+      "type": "Dochody",
+      "category": "Praca",
+      "id": "7b06"
+    },
+    {
+      "name": "Transport",
+      "amount": 300,
+      "color": "blue",
+      "date": "2025-11-15",
+      "type": "Wydatki",
+      "category": "Transport",
+      "id": "ffda"
+    },
+    {
+      "name": "Czynsz",
+      "amount": 1000,
+      "color": "pink",
+      "date": "2025-08-15",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "id": "5a97"
+    },
+    {
+      "name": "Media",
+      "amount": 500,
+      "color": "yellow",
+      "date": "2025-01-15",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "id": "17f9"
+    },
+    {
+      "name": "Rozrywka",
+      "amount": 300,
+      "color": "black",
+      "date": "2025-11-15",
+      "type": "Wydatki",
+      "category": "Rozrywka",
+      "id": "04ef"
+    },
+    {
+      "name": "Prezent",
+      "amount": 500,
+      "color": "green",
+      "date": "2025-01-15",
+      "type": "Dochody",
+      "category": "Prezent",
+      "id": "1cb4"
+    },
+    {
+      "name": "Jedzenie",
+      "amount": 1000,
+      "color": "gray",
+      "date": "2025-11-15",
+      "type": "Wydatki",
+      "category": "Jedzenie",
+      "id": "4e3e"
+    },
+    {
+      "name": "Podróże",
+      "amount": 8000,
+      "color": "cyan",
+      "date": "2025-11-15",
+      "type": "Wydatki",
+      "category": "Inne Wydatki",
+      "id": "765c"
+    },
+    {
+      "id": "f17f",
+      "name": "Produkty",
+      "amount": 50,
+      "date": "2025-11-30",
+      "type": "Wydatki",
+      "category": "Jedzenie",
+      "color": "#3ff052"
+    },
+    {
+      "id": "6b32",
+      "name": "Test",
+      "amount": 100,
+      "date": "2025-11-30",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "color": "#78fac1"
+    },
+    {
+      "id": "4f14",
+      "name": "Test",
+      "amount": 300,
+      "date": "2025-11-30",
+      "type": "Wydatki",
+      "category": "Rozrywka",
+      "color": "#261fc7"
+    },
+    {
+      "id": "b300",
+      "name": "Test",
+      "amount": 300,
+      "date": "2025-11-30",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "color": "#5ef342"
+    }
+  ],
   "photos": [
     {
       "id": "b1c8",
