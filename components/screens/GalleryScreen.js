@@ -12,22 +12,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GalleryStyles";
 
-import { API } from "../api";
+import { API , LOCAL_IP} from "../api";
 export const PHOTOS_ENDPOINT = API.PHOTOS;
-
-//let nextId = 100;
-//const generateId = () => `CAM-${nextId++}`;
-// const initialCategories = {
-//   Faktury: [
-//     { id: 'F1', uri: require("../../assets/faktura.jpg") },
-//   ],
-//   Paragony: [
-//     { id: 'P1', uri: require("../../assets/paragon.jpg") },
-//   ],
-//   Wplaty: [
-//     { id: 'W1', uri: require("../../assets/wpłata.jpg") },
-//   ],
-// };
 
 export default function GalleryScreen() {
   const { theme } = useTheme();
@@ -46,10 +32,9 @@ export default function GalleryScreen() {
     await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
       method: "DELETE"
     });
-
     fetchPhotos();
   };
-  const handleTransfer = async () => {
+  const handleTransfer = async (targetCategory) => {
     if (!selectedPhoto) return;
 
     await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
@@ -64,22 +49,19 @@ export default function GalleryScreen() {
     try {
       const res = await fetch(PHOTOS_ENDPOINT);
       const data = await res.json();
-
       const grouped = {
         Faktury: [],
         Paragony: [],
         Wplaty: []
       };
-
       data.forEach(photo => {
         if (grouped[photo.category]) {
           grouped[photo.category].push({
             id: photo.id,
-            uri: { uri: `data:image/jpeg;base64,${photo.base64}` }
+            uri: LOCAL_IP + photo.url
           });
         }
       });
-
       setImages(grouped);
       setSelectedPhoto(null); 
     } catch (e) {
@@ -93,36 +75,35 @@ export default function GalleryScreen() {
   };
   const handleCapture = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-
+    
     if (status !== 'granted') {
       Alert.alert("Brak uprawnień", "Potrzebujemy dostępu do aparatu");
       return;
     }
-
+    
     let result = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       quality: 0.5,
-      base64: true,
     });
 
     if (!result.canceled && result.assets && result.assets.length > 0) {
-      const photoBase64 = result.assets[0].base64;
-
-      const newPhoto = {
-        //id: generateId(),
-        category: selectedCategory,
-        base64: photoBase64
-      };
-
+      const capturedAsset = result.assets[0];
+      const fileName = `photo-${Date.now()}.jpg`; 
+      const formData = new FormData();
+      formData.append('photo', { 
+          uri: capturedAsset.uri,      
+          name: fileName,                
+          type: 'image/jpeg'             
+      });
+      formData.append('url', fileName); 
+      formData.append('category', selectedCategory); 
       await fetch(PHOTOS_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newPhoto)
+        body: formData 
       });
-
       fetchPhotos();
-    }
-  };
+    } 
+};
   useEffect(() => {
     fetchPhotos();
   }, []);
@@ -174,7 +155,7 @@ export default function GalleryScreen() {
             onPress={() => setSelectedPhoto(photo)} 
             style = {{marginHorizontal: 4}}
           >
-            <Image source={photo.uri} style={styles.thumbnail} /> 
+            <Image source={{ uri: photo.uri }} style={styles.thumbnail} />
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -190,7 +171,7 @@ export default function GalleryScreen() {
         <View style={[theme.centeredContainerStyle]}>
           {isTransferring ? (<TransferOptions />) : ( <>
             <Image 
-              source={selectedPhoto ? selectedPhoto.uri : null} 
+              source={{ uri: selectedPhoto ? selectedPhoto.uri : undefined }}
               style={styles.fullImage} 
               resizeMode="contain" 
             />
