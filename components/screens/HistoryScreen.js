@@ -70,7 +70,7 @@ export default function HistoryScreen() {
                     </TouchableOpacity>
                 ))}
             </View>
-            <View style={[theme.width90, { marginBottom: 5 }]}>
+            {typeFilter!="Wszystko" && <View style={[theme.width90, { marginBottom: 5 }]}>
                 <TouchableOpacity
                     style={[theme.input, theme.spacedOutRow, { paddingRight: 15, marginTop: 3 }]}
                     onPress={() => setIsCategoryListVisible(!isCategoryListVisible)}
@@ -102,6 +102,7 @@ export default function HistoryScreen() {
                     </View>
                 )}
             </View>
+            }
             <View style={[theme.centeredRow, theme.width90]}>
                 <View style={[theme.centeredRow, theme.width45, { flex: 1, marginRight: 8 }]}>
                     <Text style={[theme.basicTextStyle, { fontSize: 18, marginBottom: 14 }]}>Od:</Text>
