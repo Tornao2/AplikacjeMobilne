@@ -56,12 +56,9 @@ export default function MainScreen() {
             return true;
         });
     }
-
     const filteredData = filterByPeriod(dataSets.list || []).filter(item => item.type === type);
     const groupedData = useMemo(() => groupDataByCategory(filteredData), [filteredData]);
     const total = groupedData.reduce((sum, item) => sum + item.amount, 0);
-
-
     return (
         <ScrollView
             contentContainerStyle={theme.centeredContainerStyle}
@@ -92,7 +89,6 @@ export default function MainScreen() {
                     </TouchableOpacity>
                 ))}
             </View>
-
             {groupedData.length > 0 ? (
                 <View>
                     <PieChart

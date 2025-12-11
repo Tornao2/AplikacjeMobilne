@@ -7,19 +7,30 @@ import {
   Modal, 
   ScrollView, 
   Alert, 
+  Platform,
 } from "react-native";
 import * as ImagePicker from 'expo-image-picker'; 
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GalleryStyles";
-
+import { useAuth } from "../AuthContext";
 import { API , LOCAL_IP} from "../api";
 export const PHOTOS_ENDPOINT = API.PHOTOS;
 
 export default function GalleryScreen() {
   const { theme } = useTheme();
+  const { token, logout } = useAuth();
   const styles = createStyles(theme);
   const [selectedCategory, setSelectedCategory] = useState("Faktury");
   const [selectedPhoto, setSelectedPhoto] = useState(null); 
+  const getAuthHeaders = (contentType = "application/json") => {
+    const headers = {
+        "Authorization": `Bearer ${token}`,
+    };
+    if (contentType) {
+        headers["Content-Type"] = contentType;
+    }
+    return headers;
+};
   const [images, setImages] = useState({
     Faktury: [],
     Paragony: [],
@@ -27,86 +38,156 @@ export default function GalleryScreen() {
   });
   const [isTransferring, setIsTransferring] = useState(false); 
   const handleDelete = async () => {
-    if (!selectedPhoto) return;
-
-    await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
-      method: "DELETE"
-    });
-    fetchPhotos();
-  };
-  const handleTransfer = async (targetCategory) => {
-    if (!selectedPhoto) return;
-
-    await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ category: targetCategory })
-    });
-
-    fetchPhotos();  
-  };
-  const fetchPhotos = async () => {
-    try {
-      const res = await fetch(PHOTOS_ENDPOINT);
-      const data = await res.json();
-      const grouped = {
-        Faktury: [],
-        Paragony: [],
-        Wplaty: []
-      };
-      data.forEach(photo => {
-        if (grouped[photo.category]) {
-          grouped[photo.category].push({
-            id: photo.id,
-            uri: LOCAL_IP + photo.url
-          });
+    if (!selectedPhoto || !token) return;
+    const deletePhoto = async () => {
+        try {
+            const res = await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
+                method: "DELETE",
+                headers: getAuthHeaders(null),
+            });
+            if (res.status === 401) {
+                Alert.alert("Błąd", "Sesja wygasła. Zaloguj się ponownie.");
+                logout();
+                return;
+            }
+            if (!res.ok && res.status !== 404) {
+                 throw new Error(`Błąd usuwania: ${res.status}`);
+            }
+            fetchPhotos(); 
+            setSelectedPhoto(null);           
+        } catch (e) {
+            console.error("Delete error:", e);
+            Alert.alert("Błąd", "Nie udało się usunąć zdjęcia.");
         }
-      });
-      setImages(grouped);
-      setSelectedPhoto(null); 
+    };
+    Alert.alert(
+        "Potwierdź usunięcie",
+        "Czy na pewno chcesz usunąć to zdjęcie?",
+        [
+            { text: "Anuluj", style: "cancel" },
+            { text: "Usuń", onPress: deletePhoto, style: "destructive" },
+        ]
+    );
+  };
+  const handleTransfer = async (targetCategory) => {
+    if (!selectedPhoto || !token) return;
+    try {
+        const res = await fetch(`${PHOTOS_ENDPOINT}/${selectedPhoto.id}`, {
+            method: "PATCH",
+            headers: getAuthHeaders(), 
+            body: JSON.stringify({ category: targetCategory }),
+        });    
+        if (res.status === 401) {
+            Alert.alert("Błąd", "Sesja wygasła. Zaloguj się ponownie.");
+            logout();
+            return;
+        }
+        if (!res.ok) {
+            throw new Error(`Błąd przenoszenia: ${res.status}`);
+        }
+        fetchPhotos(); 
+        setSelectedPhoto(null);
+        setIsTransferring(false); 
     } catch (e) {
-      console.log("fetch error", e);
-      setImages({
-        Faktury: [],
-        Paragony: [],
-        Wplaty: []
-      });
+        console.error("Transfer error:", e);
+        Alert.alert("Błąd", "Nie udało się przenieść zdjęcia.");
     }
-  };
+  };
+  const fetchPhotos = async () => {
+    if (!token) { 
+        setImages({ Faktury: [], Paragony: [], Wplaty: [] });
+        return;
+    }
+    try {
+      const res = await fetch(PHOTOS_ENDPOINT, {
+        headers: getAuthHeaders(null), 
+      });
+      if (res.status === 401) {
+        console.error("Brak autoryzacji podczas pobierania zdjęć.");
+        logout();
+        return;
+      }
+      if (!res.ok) {
+        throw new Error(`Błąd pobierania: ${res.status}`);
+      }
+      const data = await res.json();
+      const grouped = {
+        Faktury: [],
+        Paragony: [],
+        Wplaty: []
+      };
+      data.forEach(photo => {
+        if (grouped[photo.category]) {
+          grouped[photo.category].push({
+            id: photo.id,
+            uri: `${LOCAL_IP}${photo.url}`
+          });
+        }
+      });
+      setImages(grouped);
+      setSelectedPhoto(null); 
+    } catch (e) {
+      console.error("fetch error", e);
+      setImages({
+        Faktury: [],
+        Paragony: [],
+        Wplaty: []
+      });
+    }
+  };
   const handleCapture = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    
     if (status !== 'granted') {
       Alert.alert("Brak uprawnień", "Potrzebujemy dostępu do aparatu");
       return;
     }
-    
     let result = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       quality: 0.5,
+      base64: true,
     });
-
     if (!result.canceled && result.assets && result.assets.length > 0) {
       const capturedAsset = result.assets[0];
-      const fileName = `photo-${Date.now()}.jpg`; 
-      const formData = new FormData();
-      formData.append('photo', { 
-          uri: capturedAsset.uri,      
-          name: fileName,                
-          type: 'image/jpeg'             
-      });
-      formData.append('url', fileName); 
-      formData.append('category', selectedCategory); 
-      await fetch(PHOTOS_ENDPOINT, {
-        method: "POST",
-        body: formData 
-      });
-      fetchPhotos();
+      let fileUri = capturedAsset.uri;
+      if (Platform.OS === 'android' && fileUri.startsWith('file:////')) { 
+        fileUri = fileUri.replace('file:////', 'file:///');
+      }
+      const finalFileName = `photo-${Date.now()}.jpg`; 
+      const photoData = {
+          url: finalFileName, 
+          category: selectedCategory, 
+          user_id: token,
+          base64: capturedAsset.base64
+      };
+      try {
+          const res = await fetch(PHOTOS_ENDPOINT, {
+              method: "POST",
+              headers: getAuthHeaders(), 
+              body: JSON.stringify(photoData) 
+          });   
+          if (res.status === 401) {
+              Alert.alert("Błąd", "Sesja wygasła podczas wysyłania zdjęcia. Zaloguj się ponownie.");
+              logout();
+              return;
+          }    
+          if (!res.ok) {
+              const errorBody = await res.json().catch(() => ({ message: `Błąd wysyłania zdjęcia: ${res.status}` }));
+              throw new Error(errorBody.message || `Błąd wysyłania zdjęcia: ${res.status}`);
+          }      
+          fetchPhotos();
+      } catch (e) {
+          console.error("Capture upload error:", e);
+          Alert.alert("Błąd", "Wystąpił błąd podczas wysyłania zdjęcia.");
+      }
     } 
 };
   useEffect(() => {
-    fetchPhotos();
-  }, []);
+    if (token) {
+        fetchPhotos();
+    } else {
+        setImages({ Faktury: [], Paragony: [], Wplaty: [] });
+    }
+  }, [token]); 
   const TransferOptions = () => (
     <View style = {theme.width90}>
       <Text style={[theme.biggerTextStyle, { marginBottom: 15, textAlign: "center" }]}>

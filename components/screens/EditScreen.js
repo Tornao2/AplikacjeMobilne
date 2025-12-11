@@ -13,6 +13,7 @@ import { useData, EXPENSE_CATEGORIES, INCOME_CATEGORIES} from "./DataContext";
 
 import { API } from "../api";
 export const LIST_ENDPOINT = API.LIST;
+import { useAuth } from "../AuthContext";
 
 export default function EditScreen() {
   const { theme } = useTheme();
@@ -23,6 +24,7 @@ export default function EditScreen() {
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState(""); 
   const [isCategoryListVisible, setIsCategoryListVisible] = useState(false);
+  const { user } = useAuth();
 
   const generateRandomColor = () => {
     return "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0");
@@ -43,29 +45,25 @@ export default function EditScreen() {
       Alert.alert("Błąd", "Uzupełnij nazwę i kwotę");
       return;
     }
-
     if (!category || !currentCategories.includes(category)) {
       Alert.alert("Błąd", "Wybierz kategorię z listy");
       return;
     }
-
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
       Alert.alert("Błąd", "Kwota musi być liczbą większą od zera");
       return;
     }
-
     const newEntry = {
       name: name.trim(),
       amount: parsedAmount,
       date: new Date().toISOString().split("T")[0],
       type,
       category,
-      color: generateRandomColor()
+      color: generateRandomColor(),
+      user_id: user.id
     };
-
     await addToList(newEntry);
-
     setName("");
     setAmount("");
     setCategory("");

@@ -7,7 +7,7 @@ import { createStyles } from "../theme/QuotesStyles";
 import { API } from "../api";
 export const QUOTES_ENDPOINT = API.QUOTES;
 
-const SHAKE_THRESHOLD = 1.5; 
+const SHAKE_THRESHOLD = 1; 
 const DEBOUNCE_TIME = 1000; 
 
 export default function QuotesScreen() {

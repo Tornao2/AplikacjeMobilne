@@ -4,6 +4,11 @@
       "id": "1",
       "email": "admin@admin.com",
       "haslo": "admin"
+    },
+    {
+      "email": "user@user.com",
+      "haslo": "user",
+      "id": "hspX6RL"
     }
   ],
   "quotes": [
@@ -100,28 +105,32 @@
   ],
   "goals": [
     {
-      "id": "1",
-      "name": "Samochód",
-      "saved": 5000,
-      "target": 10000
-    },
-    {
       "id": "3",
       "name": "Mieszkanie",
       "saved": 0,
-      "target": 350000
+      "target": 350000,
+      "user_id": "1"
     },
     {
       "id": "92ea",
       "name": "Test",
       "saved": 70,
-      "target": 500
+      "target": 500,
+      "user_id": "1"
     },
     {
-      "id": "748c",
-      "name": "d",
+      "name": "Cel1",
       "saved": 0,
-      "target": 100
+      "target": 500,
+      "user_id": "1",
+      "id": "STcP1i0"
+    },
+    {
+      "name": "Cel",
+      "saved": 0,
+      "target": 100,
+      "user_id": "hspX6RL",
+      "id": "GS5q9mZ"
     }
   ],
   "list": [
@@ -132,7 +141,8 @@
       "date": "2025-11-15",
       "type": "Wydatki",
       "category": "Jedzenie",
-      "id": "d06b"
+      "id": "d06b",
+      "user_id": "1"
     },
     {
       "name": "Transport",
@@ -141,7 +151,8 @@
       "date": "2025-10-15",
       "type": "Wydatki",
       "category": "Transport",
-      "id": "08f5"
+      "id": "08f5",
+      "user_id": "1"
     },
     {
       "name": "Kredyty",
@@ -150,7 +161,8 @@
       "date": "2025-01-15",
       "type": "Wydatki",
       "category": "Mieszkanie",
-      "id": "1d50"
+      "id": "1d50",
+      "user_id": "1"
     },
     {
       "name": "Wypłata",
@@ -159,7 +171,8 @@
       "date": "2025-09-15",
       "type": "Dochody",
       "category": "Praca",
-      "id": "7b06"
+      "id": "7b06",
+      "user_id": "1"
     },
     {
       "name": "Transport",
@@ -168,7 +181,8 @@
       "date": "2025-11-15",
       "type": "Wydatki",
       "category": "Transport",
-      "id": "ffda"
+      "id": "ffda",
+      "user_id": "1"
     },
     {
       "name": "Czynsz",
@@ -177,7 +191,8 @@
       "date": "2025-08-15",
       "type": "Wydatki",
       "category": "Mieszkanie",
-      "id": "5a97"
+      "id": "5a97",
+      "user_id": "1"
     },
     {
       "name": "Media",
@@ -186,7 +201,8 @@
       "date": "2025-01-15",
       "type": "Wydatki",
       "category": "Mieszkanie",
-      "id": "17f9"
+      "id": "17f9",
+      "user_id": "1"
     },
     {
       "name": "Rozrywka",
@@ -195,7 +211,8 @@
       "date": "2025-11-15",
       "type": "Wydatki",
       "category": "Rozrywka",
-      "id": "04ef"
+      "id": "04ef",
+      "user_id": "1"
     },
     {
       "name": "Prezent",
@@ -204,7 +221,8 @@
       "date": "2025-01-15",
       "type": "Dochody",
       "category": "Prezent",
-      "id": "1cb4"
+      "id": "1cb4",
+      "user_id": "1"
     },
     {
       "name": "Jedzenie",
@@ -213,7 +231,8 @@
       "date": "2025-11-15",
       "type": "Wydatki",
       "category": "Jedzenie",
-      "id": "4e3e"
+      "id": "4e3e",
+      "user_id": "1"
     },
     {
       "name": "Podróże",
@@ -222,7 +241,8 @@
       "date": "2025-11-15",
       "type": "Wydatki",
       "category": "Inne Wydatki",
-      "id": "765c"
+      "id": "765c",
+      "user_id": "1"
     },
     {
       "id": "f17f",
@@ -231,7 +251,8 @@
       "date": "2025-11-30",
       "type": "Wydatki",
       "category": "Jedzenie",
-      "color": "#3ff052"
+      "color": "#3ff052",
+      "user_id": "1"
     },
     {
       "id": "6b32",
@@ -240,7 +261,8 @@
       "date": "2025-11-30",
       "type": "Wydatki",
       "category": "Mieszkanie",
-      "color": "#78fac1"
+      "color": "#78fac1",
+      "user_id": "1"
     },
     {
       "id": "4f14",
@@ -249,7 +271,8 @@
       "date": "2025-11-30",
       "type": "Wydatki",
       "category": "Rozrywka",
-      "color": "#261fc7"
+      "color": "#261fc7",
+      "user_id": "1"
     },
     {
       "id": "b300",
@@ -258,7 +281,8 @@
       "date": "2025-11-30",
       "type": "Wydatki",
       "category": "Mieszkanie",
-      "color": "#5ef342"
+      "color": "#5ef342",
+      "user_id": "1"
     },
     {
       "id": "a97f",
@@ -267,7 +291,8 @@
       "date": "2025-12-01",
       "type": "Wydatki",
       "category": "Edukacja",
-      "color": "#dedf5c"
+      "color": "#dedf5c",
+      "user_id": "1"
     },
     {
       "id": "4b17",
@@ -276,7 +301,8 @@
       "date": "2025-12-01",
       "type": "Dochody",
       "category": "Prezent",
-      "color": "#0199b8"
+      "color": "#0199b8",
+      "user_id": "1"
     },
     {
       "name": "dddd",
@@ -285,7 +311,8 @@
       "type": "Wydatki",
       "category": "Transport",
       "color": "#7e045d",
-      "id": "ptb5Ghm"
+      "id": "ptb5Ghm",
+      "user_id": "1"
     },
     {
       "name": "ffffffffff",
@@ -294,29 +321,96 @@
       "type": "Wydatki",
       "category": "Mieszkanie",
       "color": "#320aec",
-      "id": "vzzbhvP"
+      "id": "vzzbhvP",
+      "user_id": "1"
+    },
+    {
+      "name": "wydatek",
+      "amount": 150,
+      "date": "2025-12-11",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "color": "#a0bc3e",
+      "user_id": "1",
+      "id": "juy1dCI"
+    },
+    {
+      "name": "dochod",
+      "amount": 200,
+      "date": "2025-12-11",
+      "type": "Dochody",
+      "category": "Inwestycje",
+      "color": "#2e0e43",
+      "user_id": "1",
+      "id": "G8Sg6GV"
+    },
+    {
+      "name": "wydatki2",
+      "amount": 500,
+      "date": "2025-12-11",
+      "type": "Wydatki",
+      "category": "Rozrywka",
+      "color": "#2ae72c",
+      "user_id": "1",
+      "id": "TBI-ZHj"
+    },
+    {
+      "name": "Wydatek",
+      "amount": 200,
+      "date": "2025-12-11",
+      "type": "Wydatki",
+      "category": "Mieszkanie",
+      "color": "#dff524",
+      "user_id": "hspX6RL",
+      "id": "iim7qJ8"
+    },
+    {
+      "name": "wydatek11",
+      "amount": 200,
+      "date": "2025-12-11",
+      "type": "Wydatki",
+      "category": "Zakupy",
+      "color": "#e5ef92",
+      "user_id": "1",
+      "id": "yFbAjd3"
     }
   ],
   "photos": [
     {
-      "id": "ea3c8418-ec8f-406f-931b-c1098bbdb7fa",
-      "url": "/photo-1764878367957.jpg",
-      "category": "Paragony"
+      "id": "0daff131-180b-4737-99ea-4d2c0400c004",
+      "url": "/photo-1765482156242.jpg",
+      "category": "Paragony",
+      "user_id": "1"
     },
     {
-      "id": "a975a194-24ed-43c5-9719-c31a13ad6ded",
-      "url": "/photo-1764878387049.jpg",
-      "category": "Wplaty"
+      "id": "7915f425-0d68-42ff-a760-43768be7a31d",
+      "url": "/photo-1765482179153.jpg",
+      "category": "Faktury",
+      "user_id": "1"
     },
     {
-      "id": "f7af030b-f39d-4506-a1db-672ab63b22c2",
-      "url": "/photo-1764878443320.jpg",
-      "category": "Faktury"
+      "id": "37ca6e0e-0302-4758-bd9d-f617b2050298",
+      "url": "/photo-1765482204053.jpg",
+      "category": "Wplaty",
+      "user_id": "1"
     },
     {
-      "id": "8062187f-4a1e-46a9-9312-f74e973b5a78",
-      "url": "/photo-1764878448477.jpg",
-      "category": "Paragony"
+      "id": "8e75a157-3ae4-40e3-b765-04f0db11561a",
+      "url": "/photo-1765482558047.jpg",
+      "category": "Faktury",
+      "user_id": "1"
+    },
+    {
+      "id": "3cb8966e-e5b1-43ef-857a-571267b1b0c5",
+      "url": "/photo-1765485495713.jpg",
+      "category": "Faktury",
+      "user_id": "hspX6RL"
+    },
+    {
+      "id": "f09749c4-e36a-425a-bd78-14470144d443",
+      "url": "/photo-1765485506906.jpg",
+      "category": "Wplaty",
+      "user_id": "hspX6RL"
     }
   ]
 }

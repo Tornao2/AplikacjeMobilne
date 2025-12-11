@@ -16,6 +16,7 @@ import HistoryScreen from "./components/screens/HistoryScreen";
 import GoalsScreen from "./components/screens/GoalsScreen";
 import SettingsScreen from "./components/screens/SettingsScreen";
 import EditScreen from "./components/screens/EditScreen";
+import { AuthProvider, useAuth } from "./components/AuthContext";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -92,6 +93,7 @@ function MainTabs() {
 
 function AppContent() {
   const { theme } = useTheme();
+  const { token } = useAuth();
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
@@ -101,23 +103,36 @@ function AppContent() {
         backgroundColor={theme.colors.background}
       />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="MainTabs" component={MainTabs} />
-        <Stack.Screen name="Edit" component={EditScreen} />
-      </Stack.Navigator>
+                {token ? (
+                    <Stack.Screen name="AppScreens" component={MainTabsStack} /> 
+                ) : (
+                    <Stack.Screen name="Login" component={LoginScreen} />
+                )}
+            </Stack.Navigator>
     </SafeAreaView>
   );
 }
 
+function MainTabsStack() {
+    return (
+         <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="MainTabs" component={MainTabs} />
+            <Stack.Screen name="Edit" component={EditScreen} />
+        </Stack.Navigator>
+    );
+}
+
 export default function App() {
   return (
-    <ThemeProvider>
-      <DataProvider>
-        <NavigationContainer>
-          <AppContent />
-        </NavigationContainer>
-      </DataProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <DataProvider>
+          <NavigationContainer>
+            <AppContent />
+          </NavigationContainer>
+        </DataProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

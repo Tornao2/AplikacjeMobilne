@@ -2,37 +2,49 @@ import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/LoginStyles";
-
-import { API } from "../api";
+import { useAuth} from "../AuthContext";
+import { API, LOCAL_IP } from "../api";
 export const ACCOUNTS_ENDPOINT = API.ACCOUNTS;
 
 export default function LoginScreen({ navigation }) {
   const { theme } = useTheme();
     const styles = createStyles(theme);
+    const { login } = useAuth();
     const [isRegister, setIsRegister] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const handleLogin = async () => {
-        setIsLoading(true);
-        try {
-            const response = await fetch(`${ACCOUNTS_ENDPOINT}?email=${email}`);
-            if (!response.ok) {
-                throw new Error("Błąd sieci podczas próby logowania.");
-            }
-            const accounts = await response.json();
-            if (accounts.length === 1 && accounts[0].haslo === password) {
-                navigation.replace("MainTabs");
-            } else {
-                Alert.alert("Błąd", "Niepoprawny email lub hasło!");
-            }
-        } catch (error) {
-            console.error("Błąd logowania:", error);
-            Alert.alert("Błąd", "Wystąpił problem z połączeniem z serwerem.");
-        } finally {
-            setIsLoading(false);
-        }
-    };
+      setIsLoading(true);
+      try {
+          const response = await fetch(`${LOCAL_IP}/auth/login`, { 
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ 
+                  email: email, 
+                  password: password 
+              }),
+          });
+          if (response.ok) { 
+              const responseData = await response.json();
+              const authToken = responseData.token; 
+              const userData = responseData.user;   
+              login(userData, authToken); 
+
+          } else if (response.status === 401) {
+              Alert.alert("Błąd", "Niepoprawny email lub hasło!");
+          } else {
+              throw new Error("Błąd podczas logowania na serwerze: " + response.status);
+          }
+      } catch (error) {
+          console.error("Błąd logowania:", error);
+          Alert.alert("Błąd", "Wystąpił problem z połączeniem z serwerem.");
+      } finally {
+          setIsLoading(false);
+      }
+  };
     const handleRegister = async () => {
         setIsLoading(true);
         try {

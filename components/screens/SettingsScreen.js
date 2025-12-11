@@ -25,22 +25,19 @@ export default function SettingsScreen() {
       width90 
   } = theme;
   const [user, setUser] = useState({
-    name: "admin",
-    email: "admin@gmail.com",
-    password: "1234",
+    email: "Email",
+    password: "Password",
     avatar: require("../../assets/avatar.jpg"),
   });
-  const [editName, setEditName] = useState(user.name);
   const [editEmail, setEditEmail] = useState(user.email);
   const [editPassword, setEditPassword] = useState(user.password);
   const saveChanges = () => {
-    if (!editName || !editEmail || !editPassword) {
+    if (!editEmail || !editPassword) {
         Alert.alert("Błąd", "Wszystkie pola muszą być wypełnione.");
         return;
     }
     setUser({
       ...user,
-      name: editName,
       email: editEmail,
       password: editPassword,
     });
@@ -59,13 +56,6 @@ export default function SettingsScreen() {
           trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
         />
       </View>
-      <TextInput
-        style={[input, width90]}
-        value={editName}
-        onChangeText={setEditName}
-        placeholder="Nazwa użytkownika"
-        placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
-      />
       <TextInput
         style={[input, width90]}
         value={editEmail}

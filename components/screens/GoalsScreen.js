@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/GoalsStyles";
-
+import { useAuth } from "../AuthContext";
 import { API } from "../api";
 export const GOALS_ENDPOINT = API.GOALS;
 
@@ -63,91 +63,144 @@ export default function GoalsScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const [goals, setGoals] = useState([]);
+  const { token, logout, user } = useAuth();
+  const getAuthHeaders = (contentType = "application/json") => {
+    const headers = {
+      "Authorization": `Bearer ${token}`,
+    };
+    if (contentType) {
+      headers["Content-Type"] = contentType;
+    }
+    return headers;
+  };
 
   useEffect(() => {
-    fetchGoals();
-  }, []);
+    if (token) {
+      fetchGoals();
+    } else {
+        setGoals([]); 
+    }
+  }, [token]);
 
   const fetchGoals = async () => {
-    try {
-      const response = await fetch(GOALS_ENDPOINT);
-      const data = await response.json();
-      setGoals(data);
-    } catch (error) {
-      console.error("Błąd pobierania celów:", error);
-    }
-  };
+    if (!token) {
+      setGoals([]);
+      return;
+    }
+    try {
+      const response = await fetch(GOALS_ENDPOINT, {
+        headers: getAuthHeaders(null),
+      });
+      if (response.status === 401) {
+          console.error("Autoryzacja wygasła.");
+          logout(); 
+          return;
+      }
+      if (!response.ok) {
+          throw new Error(`Błąd pobierania celów: ${response.status}`);
+      }
+      const data = await response.json();
+      setGoals(data);
+    } catch (error) {
+      console.error("Błąd pobierania celów:", error);
+      setGoals([]);
+    }
+  };
   const [showAddForm, setShowAddForm] = useState(false);
   const [newGoal, setNewGoal] = useState("");
   const [target, setTarget] = useState("");
   const addGoal = async () => {
-    if (!newGoal || !target) {
-      Alert.alert("Błąd", "Podaj nazwę i kwotę celu.");
-      return;
+    if (!newGoal || !target) {
+      Alert.alert("Błąd", "Podaj nazwę i kwotę celu.");
+      return;
+    }
+    if (!token) {
+        Alert.alert("Błąd", "Brak autoryzacji do dodania celu.");
+        return;
     }
-
-    try {
-      const response = await fetch(GOALS_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: newGoal,
-          saved: 0,
-          target: parseFloat(target)
-        })
-      });
-
-      if (response.ok) {
-        fetchGoals();
-        setNewGoal("");
-        setTarget("");
-        setShowAddForm(false);
+    try {
+      const response = await fetch(GOALS_ENDPOINT, {
+        method: "POST",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({
+          name: newGoal,
+          saved: 0,
+          target: parseFloat(target),
+          user_id: token 
+        })
+      });
+      if (response.status === 401) {
+          Alert.alert("Błąd", "Sesja wygasła. Zaloguj się ponownie.");
+          logout();
+          return;
       }
-    } catch (error) {
-      console.error("Błąd dodawania celu:", error);
-    }
-  };
+      if (response.ok) {
+        fetchGoals();
+        setNewGoal("");
+        setTarget("");
+        setShowAddForm(false);
+      } else {
+           throw new Error(`Błąd dodawania celu: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Błąd dodawania celu:", error);
+    }
+  };
   const deleteGoal = (id, name) => {
-    Alert.alert(
-      "Usuń cel",
-      `Czy na pewno chcesz usunąć cel "${name}"?`,
-      [
-        { text: "Anuluj", style: "cancel" },
-        {
-          text: "Usuń",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await fetch(`${GOALS_ENDPOINT}/${id}`, {
-                method: "DELETE"
-              });
-              fetchGoals();
-            } catch (error) {
-              console.error("Błąd usuwania celu:", error);
-            }
-          }
-        }
-      ]
-    );
-  };
-
+    Alert.alert(
+      "Usuń cel",
+      `Czy na pewno chcesz usunąć cel "${name}"?`,
+      [
+        { text: "Anuluj", style: "cancel" },
+        {
+          text: "Usuń",
+          style: "destructive",
+          onPress: async () => {
+                if (!token) return;
+            try {
+              const response = await fetch(`${GOALS_ENDPOINT}/${id}`, {
+                method: "DELETE",
+                headers: getAuthHeaders(null)
+              });
+              if (response.status === 401) {
+                  Alert.alert("Błąd", "Sesja wygasła. Zaloguj się ponownie.");
+                  logout();
+                  return;
+              }
+              if (!response.ok && response.status !== 404) {
+                   throw new Error(`Błąd usuwania celu: ${response.status}`);
+              }
+              fetchGoals();
+            } catch (error) {
+              console.error("Błąd usuwania celu:", error);
+            }
+          }
+        }
+      ]
+    );
+  };
   const updateProgress = async (goal, amount) => {
-  const newSaved = goal.saved + amount;
-
-  if (newSaved < 0 || newSaved > goal.target) return;
-
-  try {
-    await fetch(`${GOALS_ENDPOINT}/${goal.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ saved: newSaved })
-    });
-
-    fetchGoals();
-  } catch (error) {
-    console.error("Błąd aktualizacji celu:", error);
-  }
-};
+    const newSaved = goal.saved + amount;
+    if (newSaved < 0 || newSaved > goal.target || !token) return;
+    try {
+      const response = await fetch(`${GOALS_ENDPOINT}/${goal.id}`, {
+        method: "PATCH",
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ saved: newSaved })
+      });
+      if (response.status === 401) {
+          Alert.alert("Błąd", "Sesja wygasła. Zaloguj się ponownie.");
+          logout();
+          return;
+      }
+      if (!response.ok) {
+           throw new Error(`Błąd aktualizacji celu: ${response.status}`);
+      }
+      fetchGoals();
+    } catch (error) {
+      console.error("Błąd aktualizacji celu:", error);
+    }
+  };
 
   return (
     <View style={[theme.centeredContainerStyle]}>

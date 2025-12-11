@@ -163,7 +163,7 @@ export default function HistoryScreen() {
             </View>
             <View style={[theme.width90]}>
                 {filtered.length === 0 && (
-                    <Text style={theme.basicTextStyle}>Brak wyników</Text>
+                    <Text style={theme.titleStyle}>Brak wyników</Text>
                 )}
                 {filtered.map((item, index) => (
                     <View key={item.id ?? index} style={[theme.entryRow, { marginBottom: 2, paddingVertical: 6 }]}>
