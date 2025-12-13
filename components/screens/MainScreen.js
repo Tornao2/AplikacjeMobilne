@@ -25,6 +25,7 @@ const groupDataByCategory = (data) => {
 };
 
 export default function MainScreen() {
+    const [expandedCategories, setExpandedCategories] = useState({});
     const navigation = useNavigation();
     const { theme } = useTheme();
     const styles = createStyles(theme); 
@@ -33,6 +34,14 @@ export default function MainScreen() {
     const { dataSets } = useData();
     const screenWidth = Dimensions.get("window").width;
     const now = new Date();
+
+    const toggleCategory = (category) => {
+        setExpandedCategories(prev => ({
+            ...prev,
+            [category]: !prev[category],
+        }));
+    };
+
 
     function filterByPeriod(list) {
         return (list || []).filter(item => {
@@ -124,17 +133,52 @@ export default function MainScreen() {
             <Text style={[theme.biggerTextStyle, {marginTop: 5}]}>
                 Łączna suma {type === "Dochody" ? "dochodów" : "wydatków"}: {total.toFixed(2)} zł
             </Text>
-            <ScrollView style={[theme.width90, {marginBottom: 10, maxHeight: "50%", marginTop: 15}]}>
+            
+            <ScrollView style={[theme.width90, { marginBottom: 10, maxHeight: "50%", marginTop: 15 }]}>
                 {groupedData.map((item, index) => {
                     const percent = (total > 0 ? (item.amount / total) * 100 : 0).toFixed(2);
+                    const isExpanded = expandedCategories[item.category];
+
+                    const entriesForCategory = filteredData.filter(entry => entry.category === item.category);
+
                     return (
-                        <View key={index} style={theme.entryRow}>
-                            <Text style={styles.itemName}>
-                                <View style={{ width: 10, height: 10, backgroundColor: item.color, marginRight: 6 }} />
-                                {' '}{item.category}
-                            </Text>
-                            <Text style={theme.basicTextStyle}>{percent}%</Text>
-                            <Text style={styles.itemAmount}>{item.amount.toFixed(2)} zł</Text>
+                        <View key={index} style={[theme.entryRow, { flexDirection: "column" }]}>
+                            <TouchableOpacity
+                                style={[{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }]}
+                                onPress={() => toggleCategory(item.category)}
+                            >
+                                <Text style={styles.itemName}>
+                                    <View style={{ width: 10, height: 10, backgroundColor: item.color, marginRight: 6 }} />
+                                    {' '}{item.category}
+                                </Text>
+
+                                <Text style={theme.basicTextStyle}>{percent}%</Text>
+                            </TouchableOpacity>
+
+                            {isExpanded && (
+                                <View style={{ width: "100%", marginTop: 4, paddingLeft: 20 }}>
+                                    {entriesForCategory.map((entry, i) => (
+                                        <View
+                                            key={i}
+                                            style={{
+                                                flexDirection: "row",
+                                                justifyContent: "space-between",
+                                                paddingVertical: 4,
+                                                borderBottomColor: theme.colors.border,
+                                                borderBottomWidth: 1
+                                            }}
+                                        >
+                                            <Text style={theme.basicTextStyle}>
+                                                {entry.name || "Brak nazwy"}
+                                            </Text>
+
+                                            <Text style={styles.itemAmount}>
+                                                {entry.amount.toFixed(2)} zł
+                                            </Text>
+                                        </View>
+                                    ))}
+                                </View>
+                            )}
                         </View>
                     );
                 })}
