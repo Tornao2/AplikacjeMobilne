@@ -1,4 +1,6 @@
-export const LOCAL_IP = "http://192.168.0.59:3000";
+//export const LOCAL_IP = "http://192.168.0.59:3000";
+export const LOCAL_IP = "http://172.20.10.3:3000";
+
 export const API = {
   GOALS: `${LOCAL_IP}/goals`,
   QUOTES: `${LOCAL_IP}/quotes`,

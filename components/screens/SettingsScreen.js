@@ -1,12 +1,14 @@
+
+import { useAuth } from "../AuthContext";
 import { useState } from "react";
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  Image, 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
   Switch,
-  Alert 
+  Alert
 } from "react-native";
 import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/SettingsStyles";
@@ -14,15 +16,15 @@ import { createStyles } from "../theme/SettingsStyles";
 export default function SettingsScreen() {
   const { theme, setDarkMode } = useTheme();
   const styles = createStyles(theme);
-  const { 
-      centeredContainerStyle, 
-      titleStyle, 
-      basicTextStyle, 
-      input, 
-      button, 
-      buttonText, 
-      spacedOutRow, 
-      width90 
+  const {
+      centeredContainerStyle,
+      titleStyle,
+      basicTextStyle,
+      input,
+      button,
+      buttonText,
+      spacedOutRow,
+      width90
   } = theme;
   const [user, setUser] = useState({
     email: "Email",
@@ -43,6 +45,13 @@ export default function SettingsScreen() {
     });
     Alert.alert("Sukces", "Zapisano pomyślnie zmiany w profilu.");
   };
+
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+     logout();
+  };
+
   return (
     <View style={centeredContainerStyle}>
       <Text style={titleStyle}>Ustawienia</Text>
@@ -51,7 +60,7 @@ export default function SettingsScreen() {
         <Text style={[basicTextStyle, { fontSize: 20 }]}>Motyw</Text>
         <Switch
           value={theme.darkMode}
-          onValueChange={setDarkMode} 
+          onValueChange={setDarkMode}
           thumbColor={theme.colors.text}
           trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
         />
@@ -61,7 +70,7 @@ export default function SettingsScreen() {
         value={editEmail}
         onChangeText={setEditEmail}
         placeholder="E-mail"
-        keyboardType="email-address" 
+        keyboardType="email-address"
         placeholderTextColor={theme.darkMode ? "#929292ff" : "#A9A9A9"}
       />
       <TextInput
@@ -75,6 +84,11 @@ export default function SettingsScreen() {
       <TouchableOpacity style={[button, width90, { marginTop: 5 }]} onPress={saveChanges}>
         <Text style={buttonText}>Zapisz zmiany</Text>
       </TouchableOpacity>
+     <TouchableOpacity style={[button, width90, { marginTop: 10 }]} onPress={handleLogout}>
+       <Text style={buttonText}>Wyloguj</Text>
+     </TouchableOpacity>
+
+
     </View>
   );
 }
