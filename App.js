@@ -1,13 +1,12 @@
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, ActivityIndicator, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from '@expo/vector-icons';
-import { DataProvider } from "./components/screens/DataContext";
-
 import { ThemeProvider, useTheme } from "./components/theme/ThemeContext";
-
+import { AuthProvider, useAuth } from "./components/AuthContext";
+import { DataProvider } from "./components/screens/DataContext";
 import LoginScreen from "./components/screens/LoginScreen";
 import MainScreen from "./components/screens/MainScreen";
 import QuotesScreen from "./components/screens/QuotesScreen";
@@ -16,110 +15,65 @@ import HistoryScreen from "./components/screens/HistoryScreen";
 import GoalsScreen from "./components/screens/GoalsScreen";
 import SettingsScreen from "./components/screens/SettingsScreen";
 import EditScreen from "./components/screens/EditScreen";
-import { AuthProvider, useAuth } from "./components/AuthContext";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const GlowIcon = ({ name, size, focused, theme }) => {
-  let iconColor;
-  if (focused) {
-    iconColor = "green"; 
-  } else {
-    iconColor = theme.darkMode ? "#E0E0E0" : "#555555";
-  }
-  return (
-    <View>
-      <MaterialIcons 
-        name={name} 
-        size={size} 
-        color={iconColor} 
-      />
-    </View>
-  );
-};
+
+const screen = (name, component, icon) => ({
+  name, component, 
+  options: { tabBarIcon: ({ color, size }) => <MaterialIcons name={icon} size={size} color={color} /> }
+});
 
 function MainTabs() {
   const { theme } = useTheme();
-  const renderTabIcon = (name, props) => (
-    <GlowIcon 
-      name={name} 
-      size={props.size} 
-      focused={props.focused} 
-      theme={theme} 
-    />
-  );
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "green",
-        tabBarInactiveTintColor: theme.colors.text,
         headerShown: false,
-        tabBarStyle: { backgroundColor: theme.colors.background},
+        tabBarActiveTintColor: "green",
+        tabBarInactiveTintColor: theme.darkMode ? "#E0E0E0" : "#555",
+        tabBarStyle: { 
+          backgroundColor: theme.colors.background,
+          borderTopColor: theme.darkMode ? "#333" : "#DDD" 
+        },
       }}
     >
-      <Tab.Screen 
-        name="Główna" 
-        component={MainScreen}  
-        options={{ tabBarIcon: (props) => renderTabIcon("home", props) }}
-      />
-      <Tab.Screen 
-        name="Cytaty" 
-        component={QuotesScreen} 
-        options={{ tabBarIcon: (props) => renderTabIcon("format-quote", props) }}
-      />
-      <Tab.Screen 
-        name="Galeria" 
-        component={GalleryScreen} 
-        options={{ tabBarIcon: (props) => renderTabIcon("photo-library", props) }}
-      />
-      <Tab.Screen 
-        name="Historia" 
-        component={HistoryScreen} 
-        options={{ tabBarIcon: (props) => renderTabIcon("history", props) }}
-      />
-      <Tab.Screen 
-        name="Cele" 
-        component={GoalsScreen} 
-        options={{ tabBarIcon: (props) => renderTabIcon("flag", props) }}
-      />
-      <Tab.Screen 
-        name="Ustawienia" 
-        component={SettingsScreen} 
-        options={{ tabBarIcon: (props) => renderTabIcon("settings", props) }}
-      />
+      <Tab.Screen {...screen("Główna", MainScreen, "home")} />
+      <Tab.Screen {...screen("Cytaty", QuotesScreen, "format-quote")} />
+      <Tab.Screen {...screen("Galeria", GalleryScreen, "photo-library")} />
+      <Tab.Screen {...screen("Historia", HistoryScreen, "history")} />
+      <Tab.Screen {...screen("Cele", GoalsScreen, "flag")} />
+      <Tab.Screen {...screen("Ustawienia", SettingsScreen, "settings")} />
     </Tab.Navigator>
   );
 }
 
 function AppContent() {
   const { theme } = useTheme();
-  const { token } = useAuth();
-  return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
-    >
-      <StatusBar
-        barStyle={theme.statusBarStyle}
-        backgroundColor={theme.colors.background}
-      />
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {token ? (
-                    <Stack.Screen name="AppScreens" component={MainTabsStack} /> 
-                ) : (
-                    <Stack.Screen name="Login" component={LoginScreen} />
-                )}
-            </Stack.Navigator>
-    </SafeAreaView>
-  );
-}
-
-function MainTabsStack() {
+  const { token, isLoading } = useAuth();
+  if (isLoading) {
     return (
-         <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <View style={[styles.container, { backgroundColor: theme.colors.background, justifyContent: 'center' }]}>
+        <ActivityIndicator size="large" color="green" />
+      </View>
+    );
+  }
+
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <StatusBar barStyle={theme.statusBarStyle} backgroundColor={theme.colors.background} />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {!token ? (
+          <Stack.Screen name="Login" component={LoginScreen} />
+        ) : (
+          <Stack.Group>
             <Stack.Screen name="MainTabs" component={MainTabs} />
             <Stack.Screen name="Edit" component={EditScreen} />
-        </Stack.Navigator>
-    );
+          </Stack.Group>
+        )}
+      </Stack.Navigator>
+    </SafeAreaView>
+  );
 }
 
 export default function App() {
@@ -136,8 +90,4 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+const styles = StyleSheet.create({ container: { flex: 1 } });

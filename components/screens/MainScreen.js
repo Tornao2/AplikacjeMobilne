@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"; 
+import React, { useState, useMemo } from "react"; 
 import { View, Text, TouchableOpacity, ScrollView, Dimensions } from "react-native"; 
 import { PieChart } from "react-native-chart-kit";
 import { useNavigation } from "@react-navigation/native";
@@ -6,23 +6,11 @@ import { useTheme } from "../theme/ThemeContext";
 import { createStyles } from "../theme/MainStyles";
 import { useData } from "./DataContext";
 
-const groupDataByCategory = (data) => {
-    return data.reduce((acc, item) => {
-        const categoryName = item.category || "Brak Kategorii";
-        const categoryColor = item.color; 
-        const existingCategory = acc.find(cat => cat.category === categoryName);
-        if (existingCategory) {
-            existingCategory.amount += item.amount;
-        } else {
-            acc.push({
-                category: categoryName,
-                amount: item.amount,
-                color: categoryColor,
-            });
-        }
-        return acc;
-    }, []);
-};
+const DISTINCT_COLORS = [
+    "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", 
+    "#FF9F40", "#C9CB3F", "#E7E9ED", "#8BC34A", "#E91E63", 
+    "#00BCD4", "#FF5722"
+];
 
 export default function MainScreen() {
     const [expandedCategories, setExpandedCategories] = useState({});
@@ -42,56 +30,56 @@ export default function MainScreen() {
         }));
     };
 
-
-    function filterByPeriod(list) {
-        return (list || []).filter(item => {
+    const { groupedData, total, filteredData } = useMemo(() => {
+        const list = dataSets?.list || [];
+        const acc = {};
+        let totalSum = 0;
+        const filtered = list.filter(item => {
+            if (item.type !== type) return false;
             const d = new Date(item.date);
             if (period === "dzień") {
-                return (
-                    d.getDate() === now.getDate() &&
-                    d.getMonth() === now.getMonth() &&
-                    d.getFullYear() === now.getFullYear()
-                );
+                return d.getDate() === now.getDate() && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
             }
             if (period === "miesiąc") {
-                return (
-                    d.getMonth() === now.getMonth() &&
-                    d.getFullYear() === now.getFullYear()
-                );
+                return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
             }
             if (period === "rok") {
                 return d.getFullYear() === now.getFullYear();
             }
             return true;
         });
-    }
-    const filteredData = filterByPeriod(dataSets.list || []).filter(item => item.type === type);
-    const groupedData = useMemo(() => groupDataByCategory(filteredData), [filteredData]);
-    const total = groupedData.reduce((sum, item) => sum + item.amount, 0);
+        filtered.forEach(item => {
+            const catName = item.category || "Inne";
+            if (!acc[catName]) {
+                acc[catName] = { category: catName, amount: 0, entries: [] };
+            }
+            acc[catName].amount += item.amount;
+            acc[catName].entries.push(item);
+            totalSum += item.amount;
+        });
+        const grouped = Object.values(acc).map((item, index) => ({
+            ...item,
+            color: DISTINCT_COLORS[index % DISTINCT_COLORS.length]
+        }));
+        return { groupedData: grouped, total: totalSum, filteredData: filtered };
+    }, [dataSets?.list, type, period]);
+
     return (
-        <ScrollView
-            contentContainerStyle={theme.centeredContainerStyle}
+        <ScrollView 
+            style={theme.containerStyle}
+            contentContainerStyle={{ alignItems: 'center', paddingBottom: 40 }}
+            keyboardShouldPersistTaps="handled"
         >
-            <View style={[theme.spacedOutRow, theme.width90, {marginBottom: 2}]}>
+            <View style={[theme.spacedOutRow, theme.width90, {marginTop: 10, marginBottom: 5}]}>
                 {["Wydatki", "Dochody"].map((p) => (
-                    <TouchableOpacity
-                        key={p}
-                        style={[theme.button, type === p && theme.pressedButton, {flex:1}]}
-                        onPress={() => setType(p)}
-                    >
-                        <Text style={[theme.buttonText, type === p && styles.activePeriodText]}>
-                            {p.charAt(0).toUpperCase() + p.slice(1)}
-                        </Text>
+                    <TouchableOpacity key={p} style={[theme.button, type === p && theme.pressedButton, {flex: 1}]} onPress={() => setType(p)}>
+                        <Text style={[theme.buttonText, type === p && styles.activePeriodText]}>{p}</Text>
                     </TouchableOpacity>
                 ))}
             </View>
-            <View style={[theme.spacedOutRow, theme.width90, {marginBottom: 2}]}>
+            <View style={[theme.spacedOutRow, theme.width90, {marginBottom: 10}]}>
                 {["dzień", "miesiąc", "rok"].map((p) => (
-                    <TouchableOpacity
-                        key={p}
-                        style={[theme.button, period === p && theme.pressedButton, {flex:1, marginBottom: 0}]}
-                        onPress={() => setPeriod(p)}
-                    >
+                    <TouchableOpacity key={p} style={[theme.button, period === p && theme.pressedButton, {flex: 1}]} onPress={() => setPeriod(p)}>
                         <Text style={[theme.buttonText, period === p && styles.activePeriodText]}>
                             {p.charAt(0).toUpperCase() + p.slice(1)}
                         </Text>
@@ -99,82 +87,62 @@ export default function MainScreen() {
                 ))}
             </View>
             {groupedData.length > 0 ? (
-                <View>
-                    <PieChart
-                        data={groupedData.map((item) => ({
-                            name: item.category,
-                            population: item.amount,
-                            color: item.color,
-                            legendFontColor: theme.colors.text,
-                            legendFontSize: 14,
-                        }))}
-                        width={screenWidth}
-                        height={250}
-                        accessor="population"
-                        backgroundColor="transparent"
-                        chartConfig={{ color: () => theme.colors.text }}
-                        hasLegend={false}
-                        center={[screenWidth/4, 0]}
-                    />
-                </View>
+                <PieChart
+                    data={groupedData.map((item) => ({
+                        name: item.category,
+                        population: item.amount,
+                        color: item.color,
+                        legendFontColor: theme.colors.text,
+                        legendFontSize: 12,
+                    }))}
+                    width={screenWidth}
+                    height={220}
+                    accessor="population"
+                    backgroundColor="transparent"
+                    chartConfig={{ color: () => theme.colors.text }}
+                    hasLegend={false}
+                    center={[screenWidth / 4, 0]}
+                />
             ) : (
-                <View
-                    style={{
-                        width: 250,
-                        height: 250,
-                        alignSelf: "center",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <Text style={[{ color: theme.colors.text, fontSize: 32,}]}>Brak danych</Text>
+                <View style={{ height: 220, justifyContent: "center" }}>
+                    <Text style={[theme.titleStyle, { opacity: 0.5 }]}>Brak danych</Text>
                 </View>
             )}
-            <Text style={[theme.biggerTextStyle, {marginTop: 5}]}>
-                Łączna suma {type === "Dochody" ? "dochodów" : "wydatków"}: {total.toFixed(2)} zł
+            <Text style={[theme.biggerTextStyle, { marginVertical: 10 }]}>
+                Suma: {total.toFixed(2)} zł
             </Text>
-            
-            <ScrollView style={[theme.width90, { marginBottom: 10, maxHeight: "50%", marginTop: 15 }]}>
+            <View style={theme.width90}>
                 {groupedData.map((item, index) => {
-                    const percent = (total > 0 ? (item.amount / total) * 100 : 0).toFixed(2);
+                    const percent = (total > 0 ? (item.amount / total) * 100 : 0).toFixed(1);
                     const isExpanded = expandedCategories[item.category];
-
-                    const entriesForCategory = filteredData.filter(entry => entry.category === item.category);
-
                     return (
-                        <View key={index} style={[theme.entryRow, { flexDirection: "column" }]}>
+                        <View key={index} style={[theme.entryRow, { flexDirection: "column", paddingVertical: 12 }]}>
                             <TouchableOpacity
-                                style={[{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }]}
+                                style={{ flexDirection: "row", justifyContent: "space-between", width: "100%", alignItems: "center" }}
                                 onPress={() => toggleCategory(item.category)}
                             >
-                                <Text style={styles.itemName}>
-                                    <View style={{ width: 10, height: 10, backgroundColor: item.color, marginRight: 6 }} />
-                                    {' '}{item.category}
-                                </Text>
-
-                                <Text style={theme.basicTextStyle}>{percent}%</Text>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                                    <View style={{ width: 12, height: 12, backgroundColor: item.color, borderRadius: 2, marginRight: 10 }} />
+                                    <Text style={theme.basicTextStyle}>{item.category}</Text>
+                                </View>
+                                <Text style={theme.basicTextStyle}>{item.amount.toFixed(2)} zł ({percent}%)</Text>
                             </TouchableOpacity>
-
                             {isExpanded && (
-                                <View style={{ width: "100%", marginTop: 4, paddingLeft: 20 }}>
-                                    {entriesForCategory.map((entry, i) => (
-                                        <View
-                                            key={i}
-                                            style={{
-                                                flexDirection: "row",
-                                                justifyContent: "space-between",
-                                                paddingVertical: 4,
-                                                borderBottomColor: theme.colors.border,
-                                                borderBottomWidth: 1
-                                            }}
-                                        >
-                                            <Text style={theme.basicTextStyle}>
-                                                {entry.name || "Brak nazwy"}
-                                            </Text>
-
-                                            <Text style={styles.itemAmount}>
-                                                {entry.amount.toFixed(2)} zł
-                                            </Text>
+                                <View style={{ 
+                                    width: "100%", 
+                                    marginTop: 10, 
+                                    paddingLeft: 22, 
+                                    borderLeftWidth: 3, 
+                                    borderLeftColor: item.color,
+                                    marginLeft: 5 
+                                }}>
+                                    {item.entries.map((entry, i) => (
+                                        <View key={i} style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6 }}>
+                                            <View style={{ flex: 1 }}>
+                                                <Text style={theme.smallTextStyle}>{entry.name || "Bez nazwy"}</Text>
+                                                <Text style={[theme.smallTextStyle, { fontSize: 10, opacity: 0.6 }]}>{entry.date}</Text>
+                                            </View>
+                                            <Text style={[theme.smallTextStyle, { fontWeight: '600' }]}>{entry.amount.toFixed(2)} zł</Text>
                                         </View>
                                     ))}
                                 </View>
@@ -182,12 +150,12 @@ export default function MainScreen() {
                         </View>
                     );
                 })}
-            </ScrollView>
+            </View>
             <TouchableOpacity
-                style={[theme.button, theme.footer, theme.width90, {paddingVertical: 8}]}
+                style={[theme.button, theme.width90, { marginTop: 25, marginBottom: 20 }]}
                 onPress={() => navigation.navigate("Edit")}
             >
-                <Text style={[theme.buttonText]}>Dodaj</Text>
+                <Text style={theme.buttonText}>Dodaj</Text>
             </TouchableOpacity>
         </ScrollView>
     );
