@@ -1,12 +1,6 @@
 {
   "accounts": [
     {
-      "id": "1767525828980",
-      "email": "qwe@",
-      "haslo": "qwe",
-      "password": "qwer"
-    },
-    {
       "id": "1767526003592",
       "email": "asd@",
       "haslo": "asdf"
