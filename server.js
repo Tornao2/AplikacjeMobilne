@@ -26,13 +26,12 @@ server.use((req, res, next) => {
     const isPublic = ['/auth/login', '/quotes'].includes(req.path) || 
                      req.path.match(/\.(jpg|jpeg|png|gif)$/i) ||
                      (req.path.startsWith('/accounts') && (req.method === 'POST' || req.method === 'GET'));
-
     if (isPublic) return next();
     const token = req.headers.authorization?.split(' ')[1];
     const user = USERS_DB.find({ id: token }).value();
     if (!user) return res.status(401).json({ error: 'Brak lub nieważny token.' });
     req.userId = user.id;
-    if (['POST', 'PATCH', 'DELETE'].includes(req.method)) {
+    if (['POST', 'PATCH', 'DELETE'].includes(req.method) && !req.path.startsWith('/accounts')) {
         req.body.user_id = req.userId;
     }
     if (req.method === 'GET') {

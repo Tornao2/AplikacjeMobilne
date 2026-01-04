@@ -19,7 +19,7 @@ export default function LoginScreen() {
   const handleSubmit = async () => {
     const { email, password } = form;
     const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail) {
+    if (!cleanEmail || !cleanEmail.includes("@")) {
       Alert.alert("Błąd", "Wprowadź poprawny email");
       return;
     }
@@ -34,7 +34,7 @@ export default function LoginScreen() {
           const res = await fetch(ACCOUNTS_ENDPOINT, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: cleanEmail, haslo: password })
+            body: JSON.stringify({ id: String(Date.now()),email: cleanEmail, haslo: password })
           });
           if (res.ok) {
             Alert.alert("Sukces", "Konto utworzone! Zaloguj się.");
