@@ -14,7 +14,7 @@ export const ThemeProvider = ({ children }) => {
       reverseText: darkMode ? "#000" : "#fff",
       border: darkMode ? "#555" : "#d3d3d3",
       primary: darkMode ? "#444" : "#000",
-      selectedColor: "#0f4917ff",
+      selectedColor: "#D4AF37",
       buttonText: "#fff",
     };
     const containerBase = {
@@ -64,6 +64,14 @@ export const ThemeProvider = ({ children }) => {
         borderBottomWidth: 1, 
         borderBottomColor: colors.border, 
         paddingVertical: 8 
+      },
+      switchProps: {
+        trackColor: {
+          false: colors.border,
+          true: colors.selectedColor,
+        },
+        thumbColor: darkMode ? colors.selectedColor : "#f4f3f4",
+        ios_backgroundColor: colors.border,
       },
       categoryListContainer: {
         maxHeight: 200,

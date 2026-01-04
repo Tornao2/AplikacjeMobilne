@@ -30,7 +30,8 @@ function MainTabs() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "green",
+        //tabBarActiveTintColor: "green",
+        tabBarActiveTintColor: theme.colors.selectedColor,
         tabBarInactiveTintColor: theme.darkMode ? "#E0E0E0" : "#555",
         tabBarStyle: { 
           backgroundColor: theme.colors.background,

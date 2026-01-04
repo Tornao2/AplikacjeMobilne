@@ -12,10 +12,10 @@ export const useData = () => useContext(DataContext);
 
 export const DataProvider = ({ children }) => {
   const { token, user } = useAuth();
-  const { authorizedFetch } = useApi(); 
+  const { authorizedFetch } = useApi();
   const [dataSets, setDataSets] = useState({ list: [] });
   const [loading, setLoading] = useState(true);
-  
+
   const fetchList = useCallback(async () => {
     if (!token) return;
     setLoading(true);
@@ -29,7 +29,7 @@ export const DataProvider = ({ children }) => {
       setLoading(false);
     }
   }, [token, authorizedFetch]);
-  
+
   useEffect(() => {
     fetchList();
   }, [fetchList]);
@@ -38,7 +38,7 @@ export const DataProvider = ({ children }) => {
     try {
       const res = await authorizedFetch(LIST_ENDPOINT, {
         method: "POST",
-        body: JSON.stringify(entry), 
+        body: JSON.stringify(entry),
       });
       if (res.ok) {
         const newEntry = await res.json();

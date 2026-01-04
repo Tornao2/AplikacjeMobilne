@@ -46,8 +46,29 @@ export default function EditScreen() {
     navigation.goBack();
   }, [formData, addToList, navigation]);
   return (
-    <ScrollView contentContainerStyle={theme.centeredContainerStyle} keyboardShouldPersistTaps="handled">
-      <Text style={theme.titleStyle}>Nowy Wpis</Text>
+    //<ScrollView contentContainerStyle={theme.centeredContainerStyle} keyboardShouldPersistTaps="handled">
+<ScrollView contentContainerStyle={[theme.centeredContainerStyle, { paddingTop: 55 }]} keyboardShouldPersistTaps="handled">
+<TouchableOpacity
+  onPress={() => navigation.goBack()}
+  style={[
+    theme.button,
+    {
+      position: "absolute",
+      top: 12,
+      left: 12,
+      zIndex: 10,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      marginBottom: 0,
+      marginHorizontal: 0,
+      backgroundColor: "red",
+    },
+  ]}
+>
+  <Text style={theme.buttonText}>Anuluj</Text>
+</TouchableOpacity>
+
+     <Text style={theme.titleStyle}>Nowy Wpis</Text>
       <View style={[theme.spacedOutRow, theme.width90]}>
         {["Wydatki", "Dochody"].map((t) => (
           <TouchableOpacity

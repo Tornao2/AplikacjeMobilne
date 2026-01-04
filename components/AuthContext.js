@@ -17,8 +17,15 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadStoredAuth = async () => {
       try {
+//        const storedToken = await SecureStore.getItemAsync('userToken');
+//        storedToken = String(storedToken);
         const storedToken = await SecureStore.getItemAsync('userToken');
-        storedToken = String(storedToken);
+        const tokenString = storedToken ? String(storedToken) : null;
+
+        if (tokenString) {
+          setToken(tokenString);
+        }
+
         const storedUser = await SecureStore.getItemAsync('userData');
         if (storedToken && storedUser) {
           const parsedUser = JSON.parse(storedUser);
@@ -47,9 +54,9 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
     setToken(tokenToSave);
     try {
-      const dataToStore = { 
-        id: userData.id, 
-        email: userData.email 
+      const dataToStore = {
+        id: userData.id,
+        email: userData.email
       };
       await SecureStore.setItemAsync('userToken', tokenToSave);
       await SecureStore.setItemAsync('userData', JSON.stringify(dataToStore));

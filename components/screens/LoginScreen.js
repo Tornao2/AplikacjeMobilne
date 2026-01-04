@@ -45,7 +45,7 @@ export default function LoginScreen() {
         const response = await fetch(`${LOCAL_IP}/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: cleanEmail, password: password }),
+          body: JSON.stringify({ email: cleanEmail, password })
         });
         if (response.ok) {
           const { user, token } = await response.json();

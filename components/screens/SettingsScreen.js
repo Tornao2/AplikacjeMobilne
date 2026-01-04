@@ -67,6 +67,7 @@ export default function SettingsScreen() {
     setLoading(true);
     const payload = { email: form.email.trim() };
     if (form.password) payload.haslo = form.password;
+
     const success = await updateUser(payload);
     if (success) {
       Alert.alert("Sukces", "Dane zapisane. Zaloguj się ponownie.");
@@ -86,7 +87,10 @@ export default function SettingsScreen() {
         </TouchableOpacity>
         <View style={[theme.spacedOutRow, theme.width90]}>
           <Text style={theme.basicTextStyle}>Motyw ciemny</Text>
-          <Switch value={theme.darkMode} onValueChange={setDarkMode} />
+
+        <Switch value={theme.darkMode} onValueChange={setDarkMode} {...theme.switchProps}/>
+
+
         </View>
         <TextInput
           style={[theme.input, theme.width90]}

@@ -16,6 +16,7 @@ export const createStyles = (theme) =>
     },
     progressFill: {
       height: "100%",
-      backgroundColor: "lime",
+      //backgroundColor: "lime",
+       backgroundColor: theme.colors.selectedColor,
     },
   });
